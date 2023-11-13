@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,4 +29,15 @@ Route::controller(AuthController::class)->group(function () {
 
     // Verify Email
     Route::get('/email/verify/{id}/{hash}', 'verifyEmail')->middleware(['auth:sanctum'])->name('verification.verify');
+});
+
+// Category Routes
+Route::controller(CategoryController::class)->group(function () {
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::get('/category', 'index');
+        Route::get('/category/{id}', 'show');
+        Route::post('/category', 'store');
+        Route::patch('/category', 'update');
+        Route::delete('/category/{id}', 'destroy');
+    });
 });
