@@ -20,8 +20,8 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'firstName',
-        'lastName',
+        'first_name',
+        'last_name',
         'address',
         'email',
         'password',
@@ -47,6 +47,7 @@ class User extends Authenticatable implements JWTSubject
         'password' => 'hashed',
     ];
 
+    // JWT
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

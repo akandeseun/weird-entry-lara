@@ -15,25 +15,28 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validatedData = $request->validate([
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'address' => 'required|string',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required'
         ]);
 
         $user = User::create([
-            'firstName' => $validatedData['firstName'],
-            'lastName' => $validatedData['lastName'],
+            'first_name' => $validatedData['first_name'],
+            'last_name' => $validatedData['last_name'],
+            'address' => $validatedData['address'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password'])
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = Auth::login($user);
+        // $token = auth()->login($user);
 
 
         // sends users a verify email link
-        event(new Registered($user));
+        // event(new Registered($user));
 
         return response([
             "message" => "User created",
@@ -54,19 +57,24 @@ class AuthController extends Controller
             'password' => $validatedData['password']
         ];
 
-        if (!Auth::attempt($credentials)) {
+        $token = Auth::attempt($credentials);
+
+        if (!$token) {
             return response(["message" => "Invalid Login details"], 400);
         }
 
-        $user = User::where('email', $credentials['email'])->firstOrFail();
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
         return response([
             "data" => [
-                "user" => $user,
-                "token" => $token
+                "user" => Auth::user(),
+                "token" => $token,
             ]
+        ]);
+    }
+
+    public function me()
+    {
+        return response([
+            "user" => Auth::user()
         ]);
     }
 

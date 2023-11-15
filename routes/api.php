@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register');
     Route::post('/login', 'login');
+    Route::get('/me', 'me')->middleware('jwt-auth');
 
     // Resend Verification Mail
     Route::post('/email/verification-notification', 'resendVerificationEmail')->middleware(['auth:sanctum'])->name('verification.send');
