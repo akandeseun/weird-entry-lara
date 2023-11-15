@@ -24,12 +24,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register');
     Route::post('/login', 'login');
     Route::get('/me', 'me')->middleware('jwt-auth');
-
-    // Resend Verification Mail
-    Route::post('/email/verification-notification', 'resendVerificationEmail')->middleware(['auth:sanctum'])->name('verification.send');
-
-    // Verify Email
-    Route::get('/email/verify/{id}/{hash}', 'verifyEmail')->middleware(['auth:sanctum'])->name('verification.verify');
+    Route::get('/confirm-email', 'confirmEmail')->middleware('jwt-auth');
 });
 
 // Category Routes

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Notifications\EmailVerification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 
 class AuthController extends Controller
 {
@@ -32,11 +32,11 @@ class AuthController extends Controller
         ]);
 
         $token = Auth::login($user);
-        // $token = auth()->login($user);
 
+        $url = config('app.url') . "/confirm-email?token={$token}";
 
-        // sends users a verify email link
-        // event(new Registered($user));
+        // $user->notify(new EmailVerification($url));
+        Notification::send($user, new EmailVerification($url));
 
         return response([
             "message" => "User created",
@@ -78,21 +78,23 @@ class AuthController extends Controller
         ]);
     }
 
-    public function verifyEmail(EmailVerificationRequest $request)
+    public function confirmEmail()
     {
-        $request->fulfill();
+
+
+        if (Auth::user()->email_verified_at !== null) {
+            return response([
+                "message" => "Email verified already"
+            ]);
+        }
+        $user = User::findOrFail(Auth::id());
+
+        $user->email_verified_at = now();
+
+        $user->save();
 
         return response([
-            "message" => "Mail Verified"
-        ]);
-    }
-
-    public function resendVerificationEmail(Request $request)
-    {
-        $request->user()->sendEmailVerificationNotification();
-
-        return response([
-            "message" => "Verification link sent"
+            "message" => "Email verified successfully"
         ]);
     }
 }
