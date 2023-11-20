@@ -41,9 +41,7 @@ class ProductController extends Controller
             'category_id' => 'required|integer|exists:categories,id'
         ]);
 
-        $product = Product::create($validatedData);
-        $product->load('category');
-
+        $product = Product::create($validatedData)->load('category');
 
         return response([
             "data" => $product,
@@ -66,8 +64,7 @@ class ProductController extends Controller
 
         $product = Product::findOrFail($id);
 
-        $product->update($validatedData);
-        $product->load('category');
+        $product->update($validatedData)->load('category');
 
         return response([
             "message" => "Product Updated Successfully",
