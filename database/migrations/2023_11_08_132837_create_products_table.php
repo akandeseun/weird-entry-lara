@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->string('colors');
             $table->integer('price');
             $table->boolean('featured')->default(false);
+            $table->foreignIdFor(Category::class);
             $table->softDeletes();
 
             $table->timestamps();

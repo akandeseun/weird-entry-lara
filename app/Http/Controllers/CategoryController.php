@@ -7,23 +7,25 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function getAllCategories()
     {
         $categories = Category::all();
+        $categories->load('products');
         return response([
             "data" => $categories
         ]);
     }
 
-    public function show($id)
+    public function getCategory($id)
     {
-        $category = Category::findOrFail($id);
+        $category = Category::findOrFail($id)->load('products');
+        // $category->load('products');
         return response([
             "data" => $category
         ]);
     }
 
-    public function store(Request $request)
+    public function createCategory(Request $request)
     {
         $validatedData = $request->validate([
             'title' => 'required|string',
@@ -38,7 +40,7 @@ class CategoryController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, $id)
+    public function updateCategory(Request $request, $id)
     {
         $validatedData = $request->validate([
             'title' => 'string',
@@ -55,7 +57,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function deleteCategory($id)
     {
         $category = Category::findOrFail($id);
         $category->delete();

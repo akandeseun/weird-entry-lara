@@ -10,41 +10,9 @@ class ProductController extends Controller
 {
     //
 
-    public function storeImage(Request $request)
-    {
-        $request->file('file')->store('images');
-
-        return response(["message" => "Stored image"]);
-    }
-
-    public function uploadImageToCloudinary(Request $request)
-    {
-
-        $result = $request->file->storeOnCloudinaryAs('products', 'prod-1');
-        $url = $result->getSecurePath();
-
-        return response(["message" => "successful", "data" => $url]);
-    }
-
-    public function uploadImage($file, $oldURL = '')
-    {
-        if ($file) {
-            $response = Http::withHeaders([
-                'X-Requested-With' => 'XMLHttpRequest'
-            ])->post('https://api.cloudinary.com/v1_1/dvik3nrfv/image/upload', [
-                'file' => $file,
-                'upload_preset' => $_ENV['CLOUDINARY_UPLOAD_PRESET']
-            ]);
-
-            return $response;
-        }
-
-        return ['url' => $oldURL];
-    }
-
     public function getAllProducts()
     {
-        $products = Product::all();
+        $products = Product::all()->load('category');
 
         return response([
             "data" => $products
@@ -53,7 +21,7 @@ class ProductController extends Controller
 
     public function getProduct($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::findOrFail($id)->load('category');
 
         return response([
             "data" => $product
@@ -69,17 +37,12 @@ class ProductController extends Controller
             'sizes' => 'required|string',
             'colors' => 'required|string',
             'price' => 'required|integer',
-            'featured' => 'sometimes|boolean'
+            'featured' => 'sometimes|boolean',
+            'category_id' => 'required|integer|exists:categories,id'
         ]);
 
-        $product = Product::create([
-            'title' => $validatedData['title'],
-            'description' => $validatedData['description'],
-            'sizes' => $validatedData['sizes'],
-            'colors' => $validatedData['colors'],
-            'price' => $validatedData['price'],
-            'product_image' => $validatedData['product_image']
-        ]);
+        $product = Product::create($validatedData);
+        $product->load('category');
 
 
         return response([
@@ -87,6 +50,30 @@ class ProductController extends Controller
         ]);
     }
 
+
+    public function updateProduct(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'title' => 'string',
+            'description' => 'string',
+            'product_image' => 'string',
+            'sizes' => 'string',
+            'colors' => 'string',
+            'price' => 'integer',
+            'featured' => 'boolean',
+            'category_id' => 'integer|exists:categories,id'
+        ]);
+
+        $product = Product::findOrFail($id);
+
+        $product->update($validatedData);
+        $product->load('category');
+
+        return response([
+            "message" => "Product Updated Successfully",
+            "data" => $product
+        ]);
+    }
     public function deleteProduct($id)
     {
         $product = Product::findOrFail($id);
@@ -96,9 +83,5 @@ class ProductController extends Controller
         return response([
             "message" => "product deleted"
         ]);
-    }
-
-    public function updateProduct(Request $request, $id)
-    {
     }
 }

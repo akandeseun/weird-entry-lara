@@ -31,11 +31,11 @@ Route::controller(AuthController::class)->group(function () {
 // Category Routes
 Route::controller(CategoryController::class)->group(function () {
     Route::middleware(['jwt-auth'])->group(function () {
-        Route::get('/category', 'index');
-        Route::get('/category/{id}', 'show');
-        Route::post('/category', 'store');
-        Route::patch('/category', 'update');
-        Route::delete('/category/{id}', 'destroy');
+        Route::get('/category', 'getAllCategories');
+        Route::get('/category/{id}', 'getCategory');
+        Route::post('/category', 'createCategory');
+        Route::patch('/category', 'updateCategory');
+        Route::delete('/category/{id}', 'deleteCategory');
     });
 });
 
@@ -43,3 +43,4 @@ Route::post('/img', [ProductController::class, 'uploadImageToCloudinary']);
 Route::post('/product', [ProductController::class, 'createProduct']);
 Route::get('/product/{id}', [ProductController::class, 'getProduct']);
 Route::get('/product', [ProductController::class, 'getAllProducts']);
+Route::delete('/product/{id}', [ProductController::class, 'deleteProduct']);
