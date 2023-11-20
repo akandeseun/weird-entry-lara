@@ -81,7 +81,6 @@ class AuthController extends Controller
     public function confirmEmail()
     {
 
-
         if (Auth::user()->email_verified_at !== null) {
             return response([
                 "message" => "Email verified already"

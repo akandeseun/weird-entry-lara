@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,7 +30,7 @@ Route::controller(AuthController::class)->group(function () {
 
 // Category Routes
 Route::controller(CategoryController::class)->group(function () {
-    Route::middleware(['auth:sanctum'])->group(function () {
+    Route::middleware(['jwt-auth'])->group(function () {
         Route::get('/category', 'index');
         Route::get('/category/{id}', 'show');
         Route::post('/category', 'store');
@@ -37,3 +38,8 @@ Route::controller(CategoryController::class)->group(function () {
         Route::delete('/category/{id}', 'destroy');
     });
 });
+
+Route::post('/img', [ProductController::class, 'uploadImageToCloudinary']);
+Route::post('/product', [ProductController::class, 'createProduct']);
+Route::get('/product/{id}', [ProductController::class, 'getProduct']);
+Route::get('/product', [ProductController::class, 'getAllProducts']);

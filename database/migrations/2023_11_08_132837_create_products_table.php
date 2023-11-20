@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
+            $table->string('product_image');
             $table->string('sizes');
             $table->string('colors');
             $table->integer('price');
             $table->boolean('featured')->default(false);
+            $table->softDeletes();
 
             $table->timestamps();
         });
