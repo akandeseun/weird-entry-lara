@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SizeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,3 +45,9 @@ Route::post('/product', [ProductController::class, 'createProduct']);
 Route::get('/product/{id}', [ProductController::class, 'getProduct']);
 Route::get('/product', [ProductController::class, 'getAllProducts']);
 Route::delete('/product/{id}', [ProductController::class, 'deleteProduct']);
+
+Route::get('/size', [SizeController::class, 'getAllSizes']);
+Route::get('/size/{id}', [SizeController::class, 'getSize']);
+Route::post('/size', [SizeController::class, 'createSize']);
+Route::patch('/size', [SizeController::class, 'updateSize']);
+Route::delete('/size/{id}', [SizeController::class, 'deleteSize']);
