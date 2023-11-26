@@ -35,13 +35,25 @@ class ProductController extends Controller
             'description' => 'required|string',
             'product_image' => 'required|string',
             'size_id' => 'required|integer|exists:sizes,id',
-            'colors' => 'required|string',
+            'color_id' => 'required|integer|exists:colors,id',
             'price' => 'required|integer',
+            'sales_price' => 'sometimes|integer',
             'featured' => 'sometimes|boolean',
             'category_id' => 'required|integer|exists:categories,id'
         ]);
 
-        $product = Product::create($validatedData)->load('category');
+        $product = Product::create([
+            'title' => $validatedData['title'],
+            'description' => $validatedData['description'],
+            'product_image' => $validatedData['product_image'],
+            'price' => $validatedData['price'],
+            'sales_price' => $validatedData['sales_price'],
+            'featured' => $validatedData['featured'],
+            'category_id' => $validatedData['category_id']
+        ])->load('category');
+
+        $product->sizes()->attach($validatedData['size_id']);
+        $product->colors()->attach($validatedData['color_id']);
 
         return response([
             "data" => $product,
