@@ -22,11 +22,11 @@ class Product extends Model
 
     public function sizes(): BelongsToMany
     {
-        return $this->belongsToMany(Size::class);
+        return $this->belongsToMany(Size::class, 'products_sizes');
     }
 
     public function colors(): BelongsToMany
     {
-        return $this->belongsToMany(Color::class);
+        return $this->belongsToMany(Color::class, 'products_colors');
     }
 }

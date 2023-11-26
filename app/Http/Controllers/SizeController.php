@@ -11,7 +11,7 @@ class SizeController extends Controller
     public function getAllSizes()
     {
         $sizes = Size::all();
-        $sizes->load('products');
+        // $sizes->load('products');
         return response([
             "data" => $sizes
         ]);

@@ -12,7 +12,7 @@ class ProductController extends Controller
 
     public function getAllProducts()
     {
-        $products = Product::all()->load('category');
+        $products = Product::all()->load(['category', 'colors', 'sizes']);
 
         return response([
             "data" => $products
@@ -34,8 +34,8 @@ class ProductController extends Controller
             'title' => 'required|string',
             'description' => 'required|string',
             'product_image' => 'required|string',
-            'size_id' => 'required|integer|exists:sizes,id',
-            'color_id' => 'required|integer|exists:colors,id',
+            'size_id' => 'required|array|exists:sizes,id',
+            'color_id' => 'required|array|exists:colors,id',
             'price' => 'required|integer',
             'sales_price' => 'sometimes|integer',
             'featured' => 'sometimes|boolean',

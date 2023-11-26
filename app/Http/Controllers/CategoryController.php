@@ -10,7 +10,7 @@ class CategoryController extends Controller
     public function getAllCategories()
     {
         $categories = Category::all();
-        $categories->load('products');
+        // $categories->load('products');
         return response([
             "data" => $categories
         ]);

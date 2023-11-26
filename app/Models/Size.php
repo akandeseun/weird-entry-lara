@@ -12,8 +12,10 @@ class Size extends Model
 
     protected $guarded = ['id'];
 
+    // protected $hidden = ['pivot'];
+
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class, 'products_sizes');
     }
 }

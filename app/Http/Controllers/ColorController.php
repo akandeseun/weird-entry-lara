@@ -10,7 +10,7 @@ class ColorController extends Controller
     public function getAllColors()
     {
         $colors = Color::all();
-        $colors->load('products');
+        // $colors->load('products');
         return response([
             "data" => $colors
         ]);
