@@ -12,7 +12,7 @@ class Size extends Model
 
     protected $guarded = ['id'];
 
-    // protected $hidden = ['pivot'];
+    protected $hidden = ['pivot'];
 
     public function products(): BelongsToMany
     {
