@@ -15,6 +15,9 @@ class Product extends Model
 
     protected $guarded = ['id'];
 
+    protected $hidden = ['pivot'];
+
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
