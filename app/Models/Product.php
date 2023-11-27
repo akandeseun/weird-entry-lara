@@ -22,11 +22,11 @@ class Product extends Model
      *
      * @var array
      */
-    protected $with = [
-        'category',
-        'sizes',
-        'colors'
-    ];
+    // protected $with = [
+    //     'category',
+    //     'sizes',
+    //     'colors'
+    // ];
 
 
     public function category(): BelongsTo

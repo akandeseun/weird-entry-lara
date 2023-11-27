@@ -44,10 +44,12 @@ Route::post('/category', [CategoryController::class, 'createCategory']);
 Route::patch('/category', [CategoryController::class, 'updateCategory']);
 Route::delete('/category/{id}', [CategoryController::class, 'deleteCategory']);
 
+// Products
 Route::post('/img', [ProductController::class, 'uploadImageToCloudinary']);
+Route::get('/product', [ProductController::class, 'getAllProducts']);
 Route::post('/product', [ProductController::class, 'createProduct']);
 Route::get('/product/{id}', [ProductController::class, 'getProduct']);
-Route::get('/product', [ProductController::class, 'getAllProducts']);
+Route::patch('/product/{id}', [ProductController::class, 'updateProduct']);
 Route::delete('/product/{id}', [ProductController::class, 'deleteProduct']);
 
 // Sizes
