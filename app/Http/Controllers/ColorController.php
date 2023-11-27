@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Color;
+use Illuminate\Support\Facades\Validator;
 
 class ColorController extends Controller
 {
@@ -27,14 +28,14 @@ class ColorController extends Controller
 
     public function createColor(Request $request)
     {
-        $validatedData = $request->validate([
-            'title' => 'required|string|unique:colors',
-            'description' => 'required|string'
-        ]);
+        Validator::make($request->all(), [
+            'title' => ['required', 'string', 'unique:colors'],
+            'description' => ['required', 'string']
+        ])->validate();
 
         $color = Color::create([
-            'title' => strtoupper($validatedData['title']),
-            'description' => ucfirst($validatedData['description'])
+            'title' => strtoupper($request->title),
+            'description' => ucfirst($request->description)
         ]);
 
         return response([

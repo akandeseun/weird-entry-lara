@@ -35,7 +35,10 @@ class SizeController extends Controller
             'description' => ['required', 'string']
         ])->validate();
 
-        $size = Size::create($request->all());
+        $size = Size::create([
+            'title' => strtoupper($request->title),
+            'description' => ucfirst($request->description)
+        ]);
 
         return response([
             "message" => "Size created",
