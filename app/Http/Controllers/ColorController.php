@@ -4,70 +4,55 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Color;
+use App\Services\ColorService;
 use Illuminate\Support\Facades\Validator;
 
 class ColorController extends Controller
 {
+
+    public function __construct(private ColorService $colorService)
+    {
+    }
+
     public function getAllColors()
     {
-        $colors = Color::all();
-        // $colors->load('products');
-        return response([
-            "data" => $colors
-        ]);
+        $colors = $this->colorService->getAllColors();
+
+        return response()->json($colors);
     }
 
     public function getColor($id)
     {
-        $color = Color::findOrFail($id)->load('products');
-        // $color->load('products');
-        return response([
-            "data" => $color
-        ]);
+        $color = $this->colorService->getColor($id);
+
+        return response()->json($color);
     }
 
     public function createColor(Request $request)
     {
-        Validator::make($request->all(), [
-            'title' => ['required', 'string', 'unique:colors'],
-            'description' => ['required', 'string']
-        ])->validate();
 
-        $color = Color::create([
-            'title' => strtoupper($request->title),
-            'description' => ucfirst($request->description)
-        ]);
+        $result = $this->colorService->createColor($request);
 
-        return response([
-            "message" => "Color created",
-            "data" => $color
+        return response()->json([
+            "message" => $result->message,
+            "data" => $result->data
         ], 201);
     }
 
     public function updateColor(Request $request, $id)
     {
-        $validatedData = $request->validate([
-            'title' => 'string',
-            'description' => 'string'
-        ]);
+        $result = $this->colorService->updateColor($request, $id);
 
-        $color = Color::findOrFail($id);
-
-        $color->update($validatedData);
-
-        return response([
-            "message" => "Color updated",
-            "data" => $color
+        return response()->json([
+            "message" => $result->message,
+            "data" => $result->data
         ]);
     }
 
     public function deleteColor($id)
     {
-        $color = Color::findOrFail($id);
-        $color->delete();
+        $result = $this->colorService->deleteColor($id);
 
-        return response([
-            "message" => "Color Deleted"
-        ]);
+        return response()->json(["message" => $result->message]);
     }
 }
