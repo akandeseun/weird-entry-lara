@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Size;
+use Illuminate\Support\Facades\Validator;
 
 class SizeController extends Controller
 {
@@ -28,15 +29,13 @@ class SizeController extends Controller
 
     public function createSize(Request $request)
     {
-        $validatedData = $request->validate([
-            'title' => 'required|string|unique:sizes',
-            'description' => 'required|string'
-        ]);
 
-        $size = Size::create([
-            'title' => strtoupper($validatedData['title']),
-            'description' => ucfirst($validatedData['description'])
-        ]);
+        Validator::make($request->all(), [
+            'title' => ['required', 'string', 'unique:sizes'],
+            'description' => ['required', 'string']
+        ])->validate();
+
+        $size = Size::create($request->all());
 
         return response([
             "message" => "Size created",
@@ -46,14 +45,14 @@ class SizeController extends Controller
 
     public function updateSize(Request $request, $id)
     {
-        $validatedData = $request->validate([
-            'title' => 'string',
-            'description' => 'string'
-        ]);
+        Validator::make($request->all(), [
+            'title' => ['string', 'unique:sizes'],
+            'description' => ['string']
+        ])->validate();
 
         $size = Size::findOrFail($id);
 
-        $size->update($validatedData);
+        $size->update($request->all());
 
         return response([
             "message" => "Size updated",
