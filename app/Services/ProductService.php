@@ -44,7 +44,10 @@ class ProductService
     $product->sizes()->attach($request->size_id);
     $product->colors()->attach($request->color_id);
 
-    return $product;
+    return (object)[
+      "message" => "Product updated",
+      "data" => $product
+    ];
   }
 
   public function updateProduct(Request $request, $id)

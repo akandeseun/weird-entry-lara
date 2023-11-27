@@ -4,72 +4,57 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Size;
+use App\Services\SizeService;
 use Illuminate\Support\Facades\Validator;
 
 class SizeController extends Controller
 {
+
+    public function __construct(private SizeService $sizeService)
+    {
+    }
     //
     public function getAllSizes()
     {
-        $sizes = Size::all();
-        // $sizes->load('products');
-        return response([
-            "data" => $sizes
-        ]);
+        $sizes = $this->sizeService->getAllSizes();
+
+        return response()->json($sizes);
     }
 
     public function getSize($id)
     {
-        $size = Size::findOrFail($id)->load('products');
-        // $size->load('products');
-        return response([
-            "data" => $size
-        ]);
+        $size = $this->sizeService->getSize($id);
+
+        return response()->json($size);
     }
 
     public function createSize(Request $request)
     {
 
-        Validator::make($request->all(), [
-            'title' => ['required', 'string', 'unique:sizes'],
-            'description' => ['required', 'string']
-        ])->validate();
+        $result = $this->sizeService->createSize($request);
 
-        $size = Size::create([
-            'title' => strtoupper($request->title),
-            'description' => ucfirst($request->description)
-        ]);
-
-        return response([
-            "message" => "Size created",
-            "data" => $size
+        return response()->json([
+            "message" => $result->message,
+            "data" => $result->data
         ], 201);
     }
 
     public function updateSize(Request $request, $id)
     {
-        Validator::make($request->all(), [
-            'title' => ['string', 'unique:sizes'],
-            'description' => ['string']
-        ])->validate();
+        $result = $this->sizeService->updateSize($request, $id);
 
-        $size = Size::findOrFail($id);
-
-        $size->update($request->all());
-
-        return response([
-            "message" => "Size updated",
-            "data" => $size
+        return response()->json([
+            "message" => $result->message,
+            "data" => $result->data
         ]);
     }
 
     public function deleteSize($id)
     {
-        $size = Size::findOrFail($id);
-        $size->delete();
+        $result = $this->sizeService->deleteSize($id);
 
-        return response([
-            "message" => "Size Deleted"
+        return response()->json([
+            "message" => $result->message
         ]);
     }
 }
