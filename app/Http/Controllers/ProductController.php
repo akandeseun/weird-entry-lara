@@ -12,7 +12,7 @@ class ProductController extends Controller
 
     public function getAllProducts()
     {
-        $products = Product::all()->load(['category', 'colors', 'sizes']);
+        $products = Product::all();
 
         return response([
             "data" => $products
@@ -21,7 +21,7 @@ class ProductController extends Controller
 
     public function getProduct($id)
     {
-        $product = Product::findOrFail($id)->load('category');
+        $product = Product::findOrFail($id);
 
         return response([
             "data" => $product
@@ -42,15 +42,9 @@ class ProductController extends Controller
             'category_id' => 'required|integer|exists:categories,id'
         ]);
 
-        $product = Product::create([
-            'title' => $validatedData['title'],
-            'description' => $validatedData['description'],
-            'product_image' => $validatedData['product_image'],
-            'price' => $validatedData['price'],
-            'sales_price' => $validatedData['sales_price'],
-            'featured' => $validatedData['featured'],
-            'category_id' => $validatedData['category_id']
-        ])->load('category');
+        $product = Product::create($request->all());
+
+        // $product->with('category');
 
         $product->sizes()->attach($validatedData['size_id']);
         $product->colors()->attach($validatedData['color_id']);
@@ -76,7 +70,7 @@ class ProductController extends Controller
 
         $product = Product::findOrFail($id);
 
-        $product->update($validatedData)->load('category');
+        $product->update($validatedData);
 
         return response([
             "message" => "Product Updated Successfully",

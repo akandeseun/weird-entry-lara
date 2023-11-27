@@ -17,6 +17,17 @@ class Product extends Model
 
     protected $hidden = ['pivot'];
 
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = [
+        'category',
+        'sizes',
+        'colors'
+    ];
+
 
     public function category(): BelongsTo
     {

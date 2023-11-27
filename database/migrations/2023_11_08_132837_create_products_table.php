@@ -16,9 +16,9 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->string('product_image');
+            $table->string('product_image')->nullable();
             $table->integer('price');
-            $table->integer('sales_price');
+            $table->integer('sales_price')->nullable();
             $table->boolean('featured')->default(false);
             $table->foreignIdFor(Category::class);
             $table->softDeletes();
