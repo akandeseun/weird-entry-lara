@@ -45,7 +45,7 @@ class ProductService
     $product->colors()->attach($request->color_id);
 
     return (object)[
-      "message" => "Product updated",
+      "message" => "Product created",
       "data" => $product
     ];
   }
