@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Size;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class SizeFactory extends Factory
 {
+
+    protected $model = Size::class;
     /**
      * Define the model's default state.
      *
@@ -17,7 +20,8 @@ class SizeFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => fake()->word(),
+            'description' => fake()->sentence(5),
         ];
     }
 }
