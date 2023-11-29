@@ -11,7 +11,7 @@ class ProductService
 {
   public function getAllProducts()
   {
-    $products = Product::with(['category', 'sizes'])->get();
+    $products = Product::with(['category'])->latest()->paginate(20);
 
     return $products;
   }
@@ -22,6 +22,8 @@ class ProductService
 
     return $product;
   }
+
+
 
   public function createProduct(Request $request)
   {

@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\Color;
+use App\Models\Size;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
@@ -23,6 +25,8 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         $categoryIds = Category::take(20)->pluck('id')->all();
+        // $sizeIds = Size::take(20)->pluck('id')->all();
+        // $colorIds = Color::take(20)->pluck('id')->all();
         return [
             'title' => fake()->words(3, true),
             'description' => fake()->sentence(8),
