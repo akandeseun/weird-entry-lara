@@ -23,7 +23,23 @@ class ProductService
     return $product;
   }
 
+  public function searchProduct(Request $request)
+  {
+    $searchQuery = $request->query('search');
 
+    $product = Product::where('title', 'LIKE', "%{$searchQuery}%")->get();
+
+    if ($product->count() < 1) {
+      return (object)[
+        "message" => "sorry we couldn't find what you were looking for"
+      ];
+    }
+
+    return (object)[
+      "message" => "Search results for {$searchQuery}",
+      "data" => $product
+    ];
+  }
 
   public function createProduct(Request $request)
   {

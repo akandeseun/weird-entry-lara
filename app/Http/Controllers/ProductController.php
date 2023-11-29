@@ -28,6 +28,16 @@ class ProductController extends Controller
         return response()->json($product);
     }
 
+    public function searchProduct(Request $request)
+    {
+        $result = $this->productService->searchProduct($request);
+
+        return response()->json([
+            "message" => $result->message,
+            "data" => $result->data ?? null
+        ]);
+    }
+
     public function createProduct(Request $request)
     {
         $product = $this->productService->createProduct($request);
