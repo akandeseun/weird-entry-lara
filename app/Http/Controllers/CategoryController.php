@@ -9,8 +9,7 @@ class CategoryController extends Controller
 {
     public function getAllCategories()
     {
-        $categories = Category::all();
-        // $categories->load('products');
+        $categories = Category::with(['products'])->get();
         return response([
             "data" => $categories
         ]);
@@ -18,8 +17,7 @@ class CategoryController extends Controller
 
     public function getCategory($id)
     {
-        $category = Category::findOrFail($id)->load('products');
-        // $category->load('products');
+        $category = Category::with(['products'])->findOrFail($id);
         return response([
             "data" => $category
         ]);

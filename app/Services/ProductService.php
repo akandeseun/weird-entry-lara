@@ -11,7 +11,7 @@ class ProductService
 {
   public function getAllProducts()
   {
-    $products = Product::with(['category'])->latest()->paginate(20);
+    $products = Product::with(['category'])->latest()->paginate(10);
 
     return $products;
   }
@@ -25,9 +25,14 @@ class ProductService
 
   public function searchProduct(Request $request)
   {
-    $searchQuery = $request->query('search');
+    // $searchQuery = $request->query('search');
 
-    $product = Product::where('title', 'LIKE', "%{$searchQuery}%")->get();
+    Validator::make($request->all(), [
+      'search' => ['required', 'string']
+
+    ])->validate();
+
+    $product = Product::where('title', 'LIKE', "%{$request->search}%")->get();
 
     if ($product->count() < 1) {
       return (object)[
@@ -36,10 +41,15 @@ class ProductService
     }
 
     return (object)[
-      "message" => "Search results for {$searchQuery}",
+      "message" => "Search results for {$request->search}",
       "data" => $product
     ];
   }
+
+  // public function filterProductByCategory(Request $request)
+  // {
+  //   categoryId = 
+  // }
 
   public function createProduct(Request $request)
   {
