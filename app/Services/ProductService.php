@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Product;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -14,8 +13,6 @@ class ProductService
   {
 
     $category = $request->category;
-
-    // $products = Product::with(['category'])->latest();
 
     if ($category) {
       $products = Product::with(['category'])->where('category_id', '=', $category)->get();
