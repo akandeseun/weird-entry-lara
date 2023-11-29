@@ -12,7 +12,18 @@ class ProductService
   public function getAllProducts(Request $request)
   {
 
+    // ToDo Refactor Filter logic
     $category = $request->category;
+    $price_start = $request->price_start;
+    $price_end = $request->price_end;
+
+    if ($category && $price_start && $price_end) {;
+      $products = Product::with(['category'])->where('category_id', '=', $category)
+        ->whereBetween('price', [$price_start, $price_end])
+        ->orWhereBetween('sales_price', [$price_start, $price_end]);
+
+      return $products;
+    }
 
     if ($category) {
       $products = Product::with(['category'])->where('category_id', '=', $category)->get();
