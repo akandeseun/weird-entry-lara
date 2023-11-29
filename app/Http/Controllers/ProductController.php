@@ -14,9 +14,9 @@ class ProductController extends Controller
     }
     //
 
-    public function getAllProducts()
+    public function getAllProducts(Request $request)
     {
-        $products = $this->productService->getAllProducts();
+        $products = $this->productService->getAllProducts($request);
 
         return response()->json($products);
     }
@@ -37,6 +37,7 @@ class ProductController extends Controller
             "data" => $result->data ?? null
         ]);
     }
+
 
     public function createProduct(Request $request)
     {

@@ -3,14 +3,25 @@
 namespace App\Services;
 
 use App\Models\Product;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 
 class ProductService
 {
-  public function getAllProducts()
+  public function getAllProducts(Request $request)
   {
+
+    $category = $request->category;
+
+    // $products = Product::with(['category'])->latest();
+
+    if ($category) {
+      $products = Product::with(['category'])->where('category_id', '=', $category)->get();
+      return $products;
+    }
+
     $products = Product::with(['category'])->latest()->paginate(10);
 
     return $products;
@@ -46,9 +57,11 @@ class ProductService
     ];
   }
 
-  // public function filterProductByCategory(Request $request)
+  // public function filterProductByCategory($categoryId)
   // {
-  //   categoryId = 
+  //   $products = Product::where('category_id', '=', $categoryId)->get();
+
+  //   return $products;
   // }
 
   public function createProduct(Request $request)
