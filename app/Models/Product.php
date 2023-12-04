@@ -15,7 +15,7 @@ class Product extends Model
 
     protected $guarded = ['id'];
 
-    protected $hidden = ['pivot'];
+    protected $hidden = ['pivot', 'category_id'];
 
     /**
      * The relationships that should always be loaded.

@@ -30,7 +30,7 @@ class ProductService
       return $products;
     }
 
-    $products = Product::with(['category'])->latest()->paginate(10);
+    $products = Product::with(['category', 'sizes', 'colors'])->latest()->paginate(10);
 
     return $products;
   }
