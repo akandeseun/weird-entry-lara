@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Notification;
 
 class AuthService
 {
-  public function register(Request $request)
+  public function register(Request $request, $is_admin = false)
   {
     Validator::make($request->all(), [
       'first_name' => ['required', 'string', 'max:255'],
@@ -23,6 +23,18 @@ class AuthService
       'password' => ['required', 'string', 'min:8', 'confirmed'],
       'password_confirmation' => ['required']
     ])->validate();
+
+    if ($is_admin) {
+      $user = User::create([
+        'first_name' => $request->first_name,
+        'last_name' => $request->last_name,
+        'address' => $request->address,
+        'email' => $request->email,
+        'is_admin' => true,
+        'password' => Hash::make($request->password),
+        'email_verified_at' => now()
+      ]);
+    }
 
     $user = User::create([
       'first_name' => $request->first_name,
@@ -46,7 +58,7 @@ class AuthService
     ];
   }
 
-  public function login(Request $request)
+  public function login(Request $request, $is_admin = false)
   {
     Validator::make($request->all(), [
       'email' => ['required', 'string', 'email'],
@@ -56,7 +68,17 @@ class AuthService
     $credentials = $request->only(['email', 'password']);
 
     if (!$token = Auth::attempt($credentials)) {
-      abort(400, 'Invalid Login details');
+      abort(401, 'Invalid Login details');
+    }
+
+    if (Auth::user()->email_verified_at === null) {
+      abort(400, 'Please verify your email');
+    }
+
+    if ($is_admin && !Auth::user()->is_admin) {
+      Auth::logout();
+
+      abort(400, 'Only admins are allowed');
     }
 
     return (object)[

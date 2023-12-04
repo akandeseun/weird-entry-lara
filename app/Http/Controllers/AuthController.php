@@ -12,20 +12,28 @@ class AuthController extends Controller
     {
     }
     //
-    public function register(Request $request)
+    public function register(Request $request, $is_admin = false)
     {
-        $result = $this->authService->register($request);
+        $result = $this->authService->register($request, $is_admin);
 
         return response()->json($result);
     }
 
-    public function login(Request $request)
+    public function login(Request $request, $is_admin = false)
     {
-        $result = $this->authService->login($request);
+        $result = $this->authService->login($request, $is_admin);
 
         return response()->json($result);
     }
 
+    public function adminRegister(Request $request)
+    {
+        return $this->register($request, true);
+    }
+    public function adminLogin(Request $request)
+    {
+        return $this->login($request, true);
+    }
 
 
     public function confirmEmail()
