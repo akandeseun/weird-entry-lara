@@ -2,89 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Services\AuthService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+
 
 class AuthController extends Controller
 {
+    public function __construct(private AuthService $authService)
+    {
+    }
     //
-    public function register(Request $request)
+    public function register(Request $request, $is_admin = false)
     {
-        $validatedData = $request->validate([
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'password_confirmation' => 'required'
-        ]);
+        $result = $this->authService->register($request, $is_admin);
 
-        $user = User::create([
-            'firstName' => $validatedData['firstName'],
-            'lastName' => $validatedData['lastName'],
-            'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password'])
-        ]);
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-
-        // sends users a verify email link
-        event(new Registered($user));
-
-        return response([
-            "message" => "User created",
-            "token" => $token,
-            "info" => "A verify mail link has been sent to your mail address"
-        ]);
+        return response()->json($result);
     }
 
-    public function login(Request $request)
+    public function login(Request $request, $is_admin = false)
     {
-        $validatedData = $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string'
-        ]);
+        $result = $this->authService->login($request, $is_admin);
 
-        $credentials = [
-            'email' => $validatedData['email'],
-            'password' => $validatedData['password']
-        ];
-
-        if (!Auth::attempt($credentials)) {
-            return response(["message" => "Invalid Login details"], 400);
-        }
-
-        $user = User::where('email', $credentials['email'])->firstOrFail();
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response([
-            "data" => [
-                "user" => $user,
-                "token" => $token
-            ]
-        ]);
+        return response()->json($result);
     }
 
-    public function verifyEmail(EmailVerificationRequest $request)
+    public function adminRegister(Request $request)
     {
-        $request->fulfill();
-
-        return response([
-            "message" => "Mail Verified"
-        ]);
+        return $this->register($request, true);
+    }
+    public function adminLogin(Request $request)
+    {
+        return $this->login($request, true);
     }
 
-    public function resendVerificationEmail(Request $request)
-    {
-        $request->user()->sendEmailVerificationNotification();
 
-        return response([
-            "message" => "Verification link sent"
-        ]);
+    public function confirmEmail()
+    {
+        $result = $this->authService->confirmEmail();
+
+        return response()->json($result);
     }
 }
