@@ -24,17 +24,7 @@ class AuthService
       'password_confirmation' => ['required']
     ])->validate();
 
-    if ($is_admin) {
-      $user = User::create([
-        'first_name' => $request->first_name,
-        'last_name' => $request->last_name,
-        'address' => $request->address,
-        'email' => $request->email,
-        'is_admin' => true,
-        'password' => Hash::make($request->password),
-        'email_verified_at' => now()
-      ]);
-    }
+
 
     $user = User::create([
       'first_name' => $request->first_name,
@@ -43,6 +33,12 @@ class AuthService
       'email' => $request->email,
       'password' => Hash::make($request->password)
     ]);
+
+    if ($is_admin) {
+      $user->is_admin = true;
+      $user->email_verified_at = now();
+      $user->save();
+    }
 
     $token = Auth::login($user);
 
