@@ -68,7 +68,13 @@ class AuthService
     }
 
     if (Auth::user()->email_verified_at === null) {
-      abort(400, 'Please verify your email');
+      $url = config('app.url') . "/confirm-email?token={$token}";
+
+      // $user->notify(new EmailVerification($url));
+      Notification::send(Auth::user(), new EmailVerification($url));
+      return response()->json([
+        'message' => 'Please verify your email, a new one has been sent to your email'
+      ], 400);
     }
 
     if ($is_admin && !Auth::user()->is_admin) {
@@ -101,5 +107,12 @@ class AuthService
     return (object)[
       "message" => "Email verified successfully"
     ];
+  }
+
+  public function resendVerificationMail(User $user, $token)
+  {
+    $url = config('app.url') . "/confirm-email?token={$token}";
+
+    Notification::send($user, new EmailVerification($url));
   }
 }

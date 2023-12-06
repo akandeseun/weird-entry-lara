@@ -29,7 +29,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/admin/register', 'adminRegister');
     Route::post('/login', 'login');
     Route::post('/admin/login', 'adminLogin');
-    Route::get('/confirm-email', 'confirmEmail')->middleware('jwt-auth');
+    Route::get('/confirm-email', 'confirmEmail')->middleware(['jwt-auth']);
 });
 
 // Category Routes
@@ -41,7 +41,7 @@ Route::controller(AuthController::class)->group(function () {
 // Category
 Route::get('/category', [CategoryController::class, 'getAllCategories']);
 Route::get('/category/{id}', [CategoryController::class, 'getCategory']);
-Route::post('/category', [CategoryController::class, 'createCategory']);
+Route::post('/category', [CategoryController::class, 'createCategory'])->middleware(['jwt-auth', 'verify-admin']);
 Route::patch('/category', [CategoryController::class, 'updateCategory']);
 Route::delete('/category/{id}', [CategoryController::class, 'deleteCategory']);
 
