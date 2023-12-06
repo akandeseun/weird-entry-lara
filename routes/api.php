@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SizeController;
@@ -68,3 +69,7 @@ Route::get('/color/{id}', [ColorController::class, 'getColor']);
 Route::post('/color', [ColorController::class, 'createColor']);
 Route::patch('/color', [ColorController::class, 'updateColor']);
 Route::delete('/color/{id}', [ColorController::class, 'deleteColor']);
+
+// Cart
+Route::post('/cart/add', [CartController::class, 'addToCart']);
+Route::get('/cart', [CartController::class, 'getUserCart']);
