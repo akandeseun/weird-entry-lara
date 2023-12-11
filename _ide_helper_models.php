@@ -20,7 +20,7 @@ namespace App\Models{
  * @property int $quantity
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Product|null $products
+ * @property-read \App\Models\Order|null $order
  * @method static \Database\Factories\CartFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Cart newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Cart newQuery()
@@ -204,7 +204,8 @@ namespace App\Models{
  * @property-read int|null $carts_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
- * @property-read \App\Models\Order|null $orders
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Order> $orders
+ * @property-read int|null $orders_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
