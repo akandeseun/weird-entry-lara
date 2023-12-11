@@ -9,26 +9,25 @@ use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
-    public function addToCart(Request $request)
+    public function updateCart(Request $request)
     {
         Validator::make($request->all(), [
-            'product_id' => ['required', 'integer', 'exists:products,id']
+            'items' => ['required', 'array'],
+            'items_amount' => ['required', 'integer'],
+            'user_email' => ['required', 'email']
         ])->validate();
-        $user = Auth::user();
 
-        $cart = Cart::create([
-            'user_id' => $user->id,
-            'product_id' => $request->product_id
-        ]);
+        $cart = Cart::updateOrCreate([
+            'user_email' => $request->user_email,
+            'purchased' => false
+        ], $request->all());
 
         return response()->json($cart);
     }
 
-    public function getUserCart()
+    public function getUserCart(Request $request)
     {
-        $cart = Cart::where('user_id', Auth::id())->get();
-
-        $cart->load('products');
+        $cart = Cart::where('user_email', $request->email)->where('purchased', 'false')->firstOrFail();
 
         return response()->json($cart);
     }
