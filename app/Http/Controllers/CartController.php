@@ -27,7 +27,12 @@ class CartController extends Controller
 
     public function getUserCart(Request $request)
     {
-        $cart = Cart::where('user_email', $request->email)->where('purchased', 'false')->firstOrFail();
+
+        Validator::make($request->all(), [
+            'user_email' => ['required', 'email']
+        ])->validate();
+
+        $cart = Cart::with(['user'])->where('user_email', $request->user_email)->where('purchased', 'false')->get();
 
         return response()->json($cart);
     }

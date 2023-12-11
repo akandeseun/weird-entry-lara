@@ -71,5 +71,5 @@ Route::patch('/color', [ColorController::class, 'updateColor']);
 Route::delete('/color/{id}', [ColorController::class, 'deleteColor']);
 
 // Cart
-Route::post('/cart/add', [CartController::class, 'addToCart']);
+Route::post('/cart/add', [CartController::class, 'updateCart']);
 Route::get('/cart', [CartController::class, 'getUserCart']);

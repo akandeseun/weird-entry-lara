@@ -15,22 +15,25 @@ namespace App\Models{
  * App\Models\Cart
  *
  * @property int $id
- * @property int $user_id
- * @property int $product_id
- * @property int $quantity
+ * @property string $user_email
+ * @property array $items
+ * @property int $items_amount
+ * @property bool $purchased
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Order|null $order
+ * @property-read \App\Models\User|null $user
  * @method static \Database\Factories\CartFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Cart newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Cart newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Cart query()
  * @method static \Illuminate\Database\Eloquent\Builder|Cart whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Cart whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Cart whereProductId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Cart whereQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereItems($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereItemsAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart wherePurchased($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Cart whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Cart whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereUserEmail($value)
  */
 	class Cart extends \Eloquent {}
 }
@@ -110,9 +113,33 @@ namespace App\Models{
 /**
  * App\Models\Order
  *
+ * @property int $id
+ * @property string $order_reference
+ * @property int $user_id
+ * @property int $cart_id
+ * @property float $subtotal
+ * @property float $delivery_fee
+ * @property float $total
+ * @property mixed $shipping_address
+ * @property string $payment_status
+ * @property string $order_status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Order query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCartId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereDeliveryFee($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereOrderReference($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereOrderStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order wherePaymentStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereShippingAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereSubtotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereUserId($value)
  */
 	class Order extends \Eloquent {}
 }
