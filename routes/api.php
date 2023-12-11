@@ -42,7 +42,7 @@ Route::controller(AuthController::class)->group(function () {
 // Category
 Route::get('/category', [CategoryController::class, 'getAllCategories']);
 Route::get('/category/{id}', [CategoryController::class, 'getCategory']);
-Route::post('/category', [CategoryController::class, 'createCategory'])->middleware(['jwt-auth', 'verify-admin']);
+Route::post('/category', [CategoryController::class, 'createCategory']);
 Route::patch('/category', [CategoryController::class, 'updateCategory']);
 Route::delete('/category/{id}', [CategoryController::class, 'deleteCategory']);
 
