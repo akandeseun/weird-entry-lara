@@ -120,7 +120,7 @@ namespace App\Models{
  * @property float $subtotal
  * @property float $delivery_fee
  * @property float $total
- * @property mixed $shipping_address
+ * @property array $shipping_address
  * @property string $payment_status
  * @property string $order_status
  * @property \Illuminate\Support\Carbon|null $created_at
