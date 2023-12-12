@@ -24,7 +24,7 @@ return new class extends Migration
             // Delivery and payment
             $table->json('shipping_address');
             $table->string('payment_status')->default('unpaid');
-            $table->string('order_status')->default('unconfirmed'); // canceled, confirmed, processing, delivered
+            $table->string('order_status')->default('unconfirmed'); // 'processing', 'shipped', 'delivered', 'cancelled', 'unconfirmed'
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
