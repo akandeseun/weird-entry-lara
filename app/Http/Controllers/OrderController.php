@@ -28,10 +28,9 @@ class OrderController extends Controller
         return response()->json($order);
     }
 
-    public function getAll()
+    public function getUserOrders($userId)
     {
-        $orders = Order::all();
 
-        return response()->json($orders);
+        $orders = Order::latest()->with(['user', 'cart'])->where('user_id', $userId)->get();
     }
 }
