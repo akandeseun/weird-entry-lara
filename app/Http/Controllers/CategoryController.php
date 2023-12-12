@@ -3,65 +3,53 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+
+    public function __construct(private CategoryService $categoryService)
+    {
+    }
     public function getAllCategories()
     {
-        $categories = Category::with(['products'])->get();
-        return response([
-            "data" => $categories
-        ]);
+        $categories = $this->categoryService->getAllCategories();
+        return response()->json($categories);
     }
 
     public function getCategory($id)
     {
-        $category = Category::with(['products'])->findOrFail($id);
-        return response([
-            "data" => $category
-        ]);
+        $category = $this->categoryService->getCategory($id);
+        return response()->json($category);
     }
 
     public function createCategory(Request $request)
     {
-        $validatedData = $request->validate([
-            'title' => 'required|string',
-            'description' => 'required|string'
-        ]);
+        $result = $this->categoryService->createCategory($request);
 
-        $category = Category::create($validatedData);
-
-        return response([
+        return response()->json([
             "message" => "Category created",
-            "data" => $category
+            "data" => $result->data
         ], 201);
     }
 
     public function updateCategory(Request $request, $id)
     {
-        $validatedData = $request->validate([
-            'title' => 'string',
-            'description' => 'string'
-        ]);
+        $result = $this->categoryService->updateCategory($request, $id);
 
-        $category = Category::findOrFail($id);
-
-        $category->update($validatedData);
-
-        return response([
+        return response()->json([
             "message" => "Category updated",
-            "data" => $category
+            "data" => $result->data
         ]);
     }
 
     public function deleteCategory($id)
     {
-        $category = Category::findOrFail($id);
-        $category->delete();
+        $result = $this->categoryService->deleteCategory($id);
 
-        return response([
-            "message" => "Category Deleted"
-        ]);
+        return response()->json([
+            "message" => $result->message,
+        ], 201);
     }
 }

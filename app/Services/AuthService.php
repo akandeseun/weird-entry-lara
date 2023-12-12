@@ -24,17 +24,7 @@ class AuthService
       'password_confirmation' => ['required']
     ])->validate();
 
-    if ($is_admin) {
-      $user = User::create([
-        'first_name' => $request->first_name,
-        'last_name' => $request->last_name,
-        'address' => $request->address,
-        'email' => $request->email,
-        'is_admin' => true,
-        'password' => Hash::make($request->password),
-        'email_verified_at' => now()
-      ]);
-    }
+
 
     $user = User::create([
       'first_name' => $request->first_name,
@@ -43,6 +33,12 @@ class AuthService
       'email' => $request->email,
       'password' => Hash::make($request->password)
     ]);
+
+    if ($is_admin) {
+      $user->is_admin = true;
+      $user->email_verified_at = now();
+      $user->save();
+    }
 
     $token = Auth::login($user);
 
@@ -72,7 +68,13 @@ class AuthService
     }
 
     if (Auth::user()->email_verified_at === null) {
-      abort(400, 'Please verify your email');
+      $url = config('app.url') . "/confirm-email?token={$token}";
+
+      // $user->notify(new EmailVerification($url));
+      Notification::send(Auth::user(), new EmailVerification($url));
+      return response()->json([
+        'message' => 'Please verify your email, a new one has been sent to your email'
+      ], 400);
     }
 
     if ($is_admin && !Auth::user()->is_admin) {
@@ -105,5 +107,12 @@ class AuthService
     return (object)[
       "message" => "Email verified successfully"
     ];
+  }
+
+  public function resendVerificationMail(User $user, $token)
+  {
+    $url = config('app.url') . "/confirm-email?token={$token}";
+
+    Notification::send($user, new EmailVerification($url));
   }
 }

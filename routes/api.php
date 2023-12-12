@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\OrderController;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,8 +28,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register');
+    Route::post('/admin/register', 'adminRegister');
     Route::post('/login', 'login');
-    Route::get('/confirm-email', 'confirmEmail')->middleware('jwt-auth');
+    Route::post('/admin/login', 'adminLogin');
+    Route::get('/confirm-email', 'confirmEmail')->middleware(['jwt-auth']);
 });
 
 // Category Routes
@@ -66,3 +70,11 @@ Route::get('/color/{id}', [ColorController::class, 'getColor']);
 Route::post('/color', [ColorController::class, 'createColor']);
 Route::patch('/color', [ColorController::class, 'updateColor']);
 Route::delete('/color/{id}', [ColorController::class, 'deleteColor']);
+
+// Cart
+Route::post('/cart/add', [CartController::class, 'updateCart']);
+Route::get('/cart', [CartController::class, 'getUserCart']);
+
+
+Route::post('/order/add', [OrderController::class, 'create']);
+Route::get('/order', [OrderController::class, 'getAll']);
