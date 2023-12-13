@@ -16,7 +16,7 @@ class ProductService
     $category = $request->category;
     $price_start = $request->price_start;
     $price_end = $request->price_end;
-
+    // ToDo: refactor price filter
     if ($category && $price_start && $price_end) {;
       $products = Product::with(['category'])->where('category_id', '=', $category)
         ->whereBetween('price', [$price_start, $price_end])

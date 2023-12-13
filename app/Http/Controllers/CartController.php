@@ -36,4 +36,11 @@ class CartController extends Controller
 
         return response()->json($cart);
     }
+
+    public function getAllCarts()
+    {
+        $carts = Cart::with(['user'])->get();
+
+        return response()->json($carts);
+    }
 }
