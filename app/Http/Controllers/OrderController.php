@@ -13,14 +13,15 @@ class OrderController extends Controller
     public function create(Request $request)
     {
         Validator::make($request->all(), [
-            'user_id' => ['required', 'integer'],
-            'cart_id' => ['required', 'integer'],
+            'user_id' => ['required', 'integer', 'exists:users,id'],
+            'cart_id' => ['required', 'integer', 'exists:carts,id'],
             'subtotal' => ['required'],
             'delivery_fee' => ['required'],
             'total' => ['required'],
             'shipping_address' => ['required'],
+            'payment_ref' => ['required'],
             'payment_status' => ['sometimes', 'string'],
-            'order_status' => ['sometimes', 'string'],
+            'order_status' => ['sometimes', 'string']
         ])->validate();
 
         $order = Order::create($request->all());
@@ -69,5 +70,9 @@ class OrderController extends Controller
             "message" => "Order status updated",
             $order
         ]);
+    }
+
+    public function markAsSuccessful($paymentReference)
+    {
     }
 }

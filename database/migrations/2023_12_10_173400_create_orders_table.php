@@ -24,6 +24,8 @@ return new class extends Migration
             // Delivery and payment
             $table->json('shipping_address');
             $table->string('payment_status')->default('unpaid');
+            // pending, refund, cancelled, completed
+            $table->string('payment_ref')->nullable();
             $table->string('order_status')->default('unconfirmed'); // 'processing', 'shipped', 'delivered', 'cancelled', 'unconfirmed'
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
