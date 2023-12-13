@@ -48,7 +48,7 @@ class OrderController extends Controller
 
     public function updateOrderStatus(Request $request)
     {
-        $validStatuses = ['processing', 'shipped', 'delivered', 'cancelled', 'unconfirmed'];
+        $validStatuses = ['processing', 'shipped', 'delivered', 'cancelled', 'unconfirmed', 'confirmed'];
 
         $status = implode(',', $validStatuses,);
 
@@ -57,7 +57,7 @@ class OrderController extends Controller
         Validator::make($request->all(), [
             'order_id' => ['required', 'integer', 'exists:orders,id'],
             'order_status' => ['required', "in:{$status}"]
-        ])->validate();
+        ], $errorMessage)->validate();
 
         $order = Order::where('id', $request->order_id);
 
@@ -74,5 +74,20 @@ class OrderController extends Controller
 
     public function markAsSuccessful($paymentReference)
     {
+        $order = Order::where('payment_ref', $paymentReference)->firstOrFail();
+
+        $order->update([
+            'payment_status' => 'success',
+            'oder_status' => 'confirmed'
+        ]);
+
+        // ToDo: send mail to admin upon successful payment/order
+        // ToDo: include column for tracking the number of orders a certain product has recieved
+
+    }
+
+    public function paystackWebhook(Request $request)
+    {
+        # code...
     }
 }
