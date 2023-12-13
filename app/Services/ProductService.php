@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Str;
 
 class ProductService
 {
@@ -13,24 +13,44 @@ class ProductService
   {
 
     // ToDo Refactor Filter logic
+
     $category = $request->category;
-    $price_start = $request->price_start;
-    $price_end = $request->price_end;
 
-    if ($category && $price_start && $price_end) {;
-      $products = Product::with(['category'])->where('category_id', '=', $category)
-        ->whereBetween('price', [$price_start, $price_end])
-        ->orWhereBetween('sales_price', [$price_start, $price_end]);
+    $price = Str::of($request->price);
 
-      return $products;
+    $products = Product::with(['category']);
+
+
+    // Price and Category Filters
+
+    if ($category && $price) {
+
+      $price = $price->explode('-');
+
+      $products
+        ->latest()
+        ->where('category_id', '=', $category)
+        ->whereBetween('price', [$price[0], $price[1]])
+        ->orWhereBetween('sales_price', [$price[0], $price[1]]);
+    } elseif ($category) {
+
+      $products
+        ->where('category_id', '=', $category);
+    } elseif ($price) {
+
+      $price = $price->explode('-');
+
+      $products = Product::with(['category'])
+        ->whereBetween('price', [$price[0], $price[1]])
+        ->orWhereBetween('sales_price', [$price[0], $price[1]]);
+    } else {
+
+      $products
+        ->latest()
+        ->paginate(10);
     }
 
-    if ($category) {
-      $products = Product::with(['category'])->where('category_id', '=', $category)->get();
-      return $products;
-    }
-
-    $products = Product::with(['category', 'sizes', 'colors'])->latest()->paginate(10);
+    $products = $products->get();
 
     return $products;
   }

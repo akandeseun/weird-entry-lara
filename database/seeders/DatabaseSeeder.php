@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
     {
 
         Category::factory(20)->create();
-        Color::factory(20)->create();
-        Size::factory(20)->create();
+        Color::factory(3)->create();
+        Size::factory(3)->create();
         Product::factory(20)->hasSizes(3)->hasColors(3)->create();
 
 
