@@ -72,11 +72,11 @@ Route::patch('/color', [ColorController::class, 'updateColor']);
 Route::delete('/color/{id}', [ColorController::class, 'deleteColor']);
 
 // Cart
-Route::post('/cart/add', [CartController::class, 'updateCart']);
+Route::post('/cart/create', [CartController::class, 'updateCart']);
 Route::get('/cart', [CartController::class, 'getUserCart']);
 
 
-Route::post('/order/add', [OrderController::class, 'create']);
+Route::post('/order/create', [OrderController::class, 'create']);
 Route::get('/order', [OrderController::class, 'getAllOrders']);
 
 Route::post('/paystack-webhook', [OrderController::class, 'paystackWebhook']);
