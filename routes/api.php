@@ -77,4 +77,6 @@ Route::get('/cart', [CartController::class, 'getUserCart']);
 
 
 Route::post('/order/add', [OrderController::class, 'create']);
-Route::get('/order', [OrderController::class, 'getAll']);
+Route::get('/order', [OrderController::class, 'getAllOrders']);
+
+Route::post('/paystack-webhook', [OrderController::class, 'paystackWebhook']);

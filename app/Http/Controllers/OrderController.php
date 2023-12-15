@@ -41,7 +41,7 @@ class OrderController extends Controller
     // Todo: sort based on query parameters
     public function getAllOrders()
     {
-        $orders = Order::latest()->with(['cart', 'with'])->get();
+        $orders = Order::latest()->with(['cart'])->get();
 
         return response()->json($orders);
     }
@@ -78,8 +78,10 @@ class OrderController extends Controller
 
         $order->update([
             'payment_status' => 'success',
-            'oder_status' => 'confirmed'
+            'order_status' => 'confirmed'
         ]);
+
+        // ToDo: mark cart as purchased
 
         // ToDo: send mail to admin upon successful payment/order
         // ToDo: include column for tracking the number of orders a certain product has recieved
@@ -88,6 +90,19 @@ class OrderController extends Controller
 
     public function paystackWebhook(Request $request)
     {
-        # code...
+        $requestBody = @file_get_contents("php://input");
+        $secret = env('PAYSTACK_SECRET');
+
+        $hash = hash_hmac('sha512', $requestBody, $secret);
+        $paystackHash = $request->header('x-paystack-signature');
+
+        if ($hash === $paystackHash) {
+            $reference = $request->input('data.reference');
+            $status = $request->input('data.status');
+
+            if ($status == "success") {
+                $this->markAsSuccessful($reference);
+            }
+        }
     }
 }
