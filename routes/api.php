@@ -76,7 +76,7 @@ Route::delete('/color/{id}', [ColorController::class, 'deleteColor']);
 // Cart
 Route::post('/cart/create', [CartController::class, 'updateCart']);
 Route::get('/cart/f', [CartController::class, 'getUserCart']);
-Route::get('/cart', [CartController::class, 'currentUserCart']);
+Route::get('/cart', [CartController::class, 'currentUserCart'])->middleware(['jwt-auth']);
 
 // Orders
 Route::post('/order/create', [OrderController::class, 'create']);
