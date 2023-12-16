@@ -55,5 +55,7 @@ class CartController extends Controller
         $user = Auth::user()->email;
 
         $cart = Cart::where('user_email', $user)->firstOrFail();
+
+        return response()->json($cart);
     }
 }

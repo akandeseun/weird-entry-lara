@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// ToDo: Protect Routes after testing
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -72,9 +74,14 @@ Route::patch('/color', [ColorController::class, 'updateColor']);
 Route::delete('/color/{id}', [ColorController::class, 'deleteColor']);
 
 // Cart
-Route::post('/cart/add', [CartController::class, 'updateCart']);
-Route::get('/cart', [CartController::class, 'getUserCart']);
+Route::post('/cart/create', [CartController::class, 'updateCart']);
+Route::get('/cart/f', [CartController::class, 'getUserCart']);
+Route::get('/cart', [CartController::class, 'currentUserCart'])->middleware(['jwt-auth']);
+
+// Orders
+Route::post('/order/create', [OrderController::class, 'create']);
+Route::get('/order', [OrderController::class, 'getAllOrders']);
 
 
-Route::post('/order/add', [OrderController::class, 'create']);
-Route::get('/order', [OrderController::class, 'getAll']);
+// webhooks
+Route::post('/paystack-webhook', [OrderController::class, 'paystackWebhook']);
