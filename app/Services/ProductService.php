@@ -28,31 +28,29 @@ class ProductService
       $price = Str::of($price)->explode('-');
 
 
-      $products
+      return $products
         ->latest()
         ->where('category_id', '=', $category)
         ->whereBetween('price', [$price[0], $price[1]])
-        ->orWhereBetween('sales_price', [$price[0], $price[1]]);
+        ->orWhereBetween('sales_price', [$price[0], $price[1]])->get();
     } elseif ($category) {
 
-      $products
-        ->where('category_id', '=', $category);
+      return $products
+        ->latest()
+        ->where('category_id', '=', $category)->get();
     } elseif ($price) {
 
       $price = Str::of($price)->explode('-');
 
-      $products->whereBetween('price', [$price[0], $price[1]])
-        ->orWhereBetween('sales_price', [$price[0], $price[1]]);
-    } else {
-
-      $products
+      return $products
         ->latest()
-        ->paginate(10);
+        ->whereBetween('price', [$price[0], $price[1]])
+        ->orWhereBetween('sales_price', [$price[0], $price[1]])->get();
     }
 
-    // $products = $products->get();
-
-    return $products->get();
+    return $products
+      ->latest()
+      ->paginate(10);
   }
 
   public function getProduct($id)
