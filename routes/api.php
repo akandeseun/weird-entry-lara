@@ -33,6 +33,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/login', 'login');
     Route::post('/admin/login', 'adminLogin');
     Route::get('/confirm-email', 'confirmEmail')->middleware(['jwt-auth']);
+    Route::post('/logout', 'logout')->middleware(['jwt-auth']);
 });
 
 // Category Routes

@@ -89,6 +89,13 @@ class AuthService
     ];
   }
 
+  public function logout()
+  {
+    Auth::logout();
+
+    return (object)["message" => "Successfully logged out"];
+  }
+
   public function confirmEmail()
   {
 
