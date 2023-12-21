@@ -4,8 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Product;
-use App\Models\Size;
 
 class ProductSeeder extends Seeder
 {
@@ -15,7 +13,9 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         //
-        // $sizes = Size::all();
-        Product::factory(20)->hasSizes(3)->create();
+
+        $productImages = [
+            'https://img.freepik.com/free-photo/short-sleeve-black-t-shirt_1409-2226.jpg'
+        ];
     }
 }

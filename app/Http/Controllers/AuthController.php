@@ -26,6 +26,13 @@ class AuthController extends Controller
         return response()->json($result);
     }
 
+    public function logout()
+    {
+        $result = $this->authService->logout();
+
+        return response()->json($result);
+    }
+
     public function adminRegister(Request $request)
     {
         return $this->register($request, true);

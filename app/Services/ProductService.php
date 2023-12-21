@@ -18,38 +18,40 @@ class ProductService
 
     $price = $request->price;
 
-    $products = Product::with(['category']);
-
-
-    // Price and Category Filters
+    $products = Product::with(['category'])->latest();
 
     if ($category && $price) {
 
       $price = Str::of($price)->explode('-');
-
+      $categories = Str::of($category)->explode('+');
 
       return $products
-        ->latest()
         ->where('category_id', '=', $category)
+        ->orWhereIn('category_id', $categories)
         ->whereBetween('price', [$price[0], $price[1]])
         ->orWhereBetween('sales_price', [$price[0], $price[1]])->get();
-    } elseif ($category) {
+    }
+
+    if ($category) {
+
+      $categories = Str::of($category)->explode('+');
 
       return $products
-        ->latest()
-        ->where('category_id', '=', $category)->get();
-    } elseif ($price) {
+        ->where('category_id', '=', $category)
+        ->orWhereIn('category_id', $categories)
+        ->get();
+    }
+
+    if ($price) {
 
       $price = Str::of($price)->explode('-');
 
       return $products
-        ->latest()
         ->whereBetween('price', [$price[0], $price[1]])
         ->orWhereBetween('sales_price', [$price[0], $price[1]])->get();
     }
 
     return $products
-      ->latest()
       ->paginate(10);
   }
 
