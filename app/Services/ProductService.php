@@ -85,13 +85,6 @@ class ProductService
     ];
   }
 
-  // public function filterProductByCategory($categoryId)
-  // {
-  //   $products = Product::where('category_id', '=', $categoryId)->get();
-
-  //   return $products;
-  // }
-
   public function createProduct(Request $request)
   {
 
