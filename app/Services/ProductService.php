@@ -55,13 +55,6 @@ class ProductService
 
     // search filter 
     if ($search) {
-      // if search string
-      if (empty($search)) {
-        return (object)[
-          "message" => "sorry we couldn't find what you were looking for"
-        ];
-      }
-
       $products = $products->where('title', 'LIKE', "%{$search}%")
         ->orWhereHas('category', function (Builder $query) use ($search) {
           $query->where('title', 'LIKE', "%{$search}%");
@@ -140,7 +133,6 @@ class ProductService
 
   public function deleteProduct($id)
   {
-    // $product = Product::findOrFail($id);
 
     $product = $this->getProduct($id);
 

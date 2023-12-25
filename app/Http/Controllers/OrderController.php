@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Validator;
@@ -81,7 +82,8 @@ class OrderController extends Controller
             'order_status' => 'confirmed'
         ]);
 
-        // ToDo: mark cart as purchased
+        // mark cart as purchased
+        $cart = Cart::where('id', $order->cart_id)->update(['purchased' => true]);
 
         // ToDo: send mail to admin upon successful payment/order
         // ToDo: include column for tracking the number of orders a certain product has recieved
