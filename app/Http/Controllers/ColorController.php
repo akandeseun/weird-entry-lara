@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Color;
 use App\Services\ColorService;
-use Illuminate\Support\Facades\Validator;
 
 class ColorController extends Controller
 {

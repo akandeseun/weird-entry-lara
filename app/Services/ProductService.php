@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Product;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -15,11 +16,12 @@ class ProductService
     // ToDo Refactor Filter logic
 
     $category = $request->category;
-
     $price = $request->price;
+    $search = $request->s;
+
 
     $products = Product::with(['category'])->latest();
-
+    // category and price filter
     if ($category && $price) {
 
       $price = Str::of($price)->explode('-');
@@ -31,7 +33,7 @@ class ProductService
         ->whereBetween('price', [$price[0], $price[1]])
         ->orWhereBetween('sales_price', [$price[0], $price[1]])->get();
     }
-
+    // category filter
     if ($category) {
 
       $categories = Str::of($category)->explode('+');
@@ -41,7 +43,7 @@ class ProductService
         ->orWhereIn('category_id', $categories)
         ->get();
     }
-
+    // price filter
     if ($price) {
 
       $price = Str::of($price)->explode('-');
@@ -49,6 +51,22 @@ class ProductService
       return $products
         ->whereBetween('price', [$price[0], $price[1]])
         ->orWhereBetween('sales_price', [$price[0], $price[1]])->get();
+    }
+
+    // search filter 
+    if ($search) {
+      $products = $products->where('title', 'LIKE', "%{$search}%")
+        ->orWhereHas('category', function (Builder $query) use ($search) {
+          $query->where('title', 'LIKE', "%{$search}%");
+        })->get();
+
+      if ($products->count() < 1) {
+        return (object)[
+          "message" => "sorry we couldn't find what you were looking for"
+        ];
+      }
+
+      return $products;
     }
 
     return $products
@@ -61,36 +79,6 @@ class ProductService
 
     return $product;
   }
-
-  public function searchProduct(Request $request)
-  {
-    // $searchQuery = $request->query('search');
-
-    Validator::make($request->all(), [
-      'search' => ['required', 'string']
-
-    ])->validate();
-
-    $product = Product::where('title', 'LIKE', "%{$request->search}%")->get();
-
-    if ($product->count() < 1) {
-      return (object)[
-        "message" => "sorry we couldn't find what you were looking for"
-      ];
-    }
-
-    return (object)[
-      "message" => "Search results for {$request->search}",
-      "data" => $product
-    ];
-  }
-
-  // public function filterProductByCategory($categoryId)
-  // {
-  //   $products = Product::where('category_id', '=', $categoryId)->get();
-
-  //   return $products;
-  // }
 
   public function createProduct(Request $request)
   {
@@ -145,7 +133,6 @@ class ProductService
 
   public function deleteProduct($id)
   {
-    // $product = Product::findOrFail($id);
 
     $product = $this->getProduct($id);
 

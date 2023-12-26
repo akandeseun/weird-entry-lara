@@ -52,7 +52,6 @@ Route::delete('/category/{id}', [CategoryController::class, 'deleteCategory']);
 // Products
 Route::post('/img', [ProductController::class, 'uploadImageToCloudinary']);
 Route::get('/product', [ProductController::class, 'getAllProducts']);
-Route::get('/product/s', [ProductController::class, 'searchProduct']);
 Route::post('/product', [ProductController::class, 'createProduct']);
 Route::get('/product/{id}', [ProductController::class, 'getProduct']);
 Route::patch('/product/{id}', [ProductController::class, 'updateProduct']);
