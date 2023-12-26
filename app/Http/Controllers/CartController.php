@@ -59,6 +59,10 @@ class CartController extends Controller
 
         $cart = Cart::where('user_email', $user)->firstOrFail();
 
+        if (!$cart) {
+            return response()->json(["message" => "User has no cart"], 400);
+        }
+
         return response()->json($cart);
     }
 }
