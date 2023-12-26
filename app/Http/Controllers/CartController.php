@@ -57,7 +57,7 @@ class CartController extends Controller
     {
         $user = Auth::user()->email;
 
-        $cart = Cart::where('user_email', $user)->firstOrFail();
+        $cart = Cart::where('user_email', $user)->get();
 
         if (!$cart) {
             return response()->json(["message" => "User has no cart"], 400);
