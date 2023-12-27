@@ -9,7 +9,7 @@ use Validator;
 
 class WishlistController extends Controller
 {
-    public function addToWishList(Request $request)
+    public function addToWishlist(Request $request)
     {
         Validator::make($request->all(), [
             'product_id' => ['required', 'integer', 'exists:products,id'],
@@ -26,7 +26,7 @@ class WishlistController extends Controller
         ]);
     }
 
-    public function removeFromWishList(Request $request)
+    public function removeFromWishlist(Request $request)
     {
         $user = Auth::id();
         Validator::make($request->all(), [

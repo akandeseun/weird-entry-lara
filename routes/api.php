@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,13 +21,14 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
+// ToDo: REFACTOR ROUTES into prefixes and groups
 // ToDo: Protect Routes after testing
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Auth
 Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register');
     Route::post('/admin/register', 'adminRegister');
@@ -35,12 +37,6 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('/confirm-email', 'confirmEmail')->middleware(['jwt-auth']);
     Route::post('/logout', 'logout')->middleware(['jwt-auth']);
 });
-
-// Category Routes
-// Route::controller(CategoryController::class)->group(function () {
-//     Route::middleware(['jwt-auth'])->group(function () {
-//     });
-// });
 
 // Category
 Route::get('/category', [CategoryController::class, 'getAllCategories']);
@@ -76,6 +72,10 @@ Route::delete('/color/{id}', [ColorController::class, 'deleteColor']);
 Route::post('/cart/create', [CartController::class, 'updateCart']);
 Route::get('/cart/f', [CartController::class, 'getUserCart']);
 Route::get('/cart', [CartController::class, 'currentUserCart'])->middleware(['jwt-auth']);
+
+// Wishlists
+Route::post('/wishlist/create', [WishlistController::class, 'addToWishlist'])->middleware(['jwt-auth']);
+Route::post('/wishlist/create', [WishlistController::class, 'removeFromWishlist'])->middleware(['jwt-auth']);
 
 // Orders
 Route::post('/order/create', [OrderController::class, 'create']);
