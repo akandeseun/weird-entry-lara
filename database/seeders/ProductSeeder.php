@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Product;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,10 +13,6 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        //
-
-        $productImages = [
-            'https://img.freepik.com/free-photo/short-sleeve-black-t-shirt_1409-2226.jpg'
-        ];
+        Product::factory()->count(30)->create();
     }
 }
