@@ -13,7 +13,7 @@ class CartController extends Controller
     public function updateCart(Request $request)
     {
         Validator::make($request->all(), [
-            'items' => ['required', 'array'],
+            'items' => ['array'],
             'user_email' => ['required', 'email']
         ])->validate();
 
