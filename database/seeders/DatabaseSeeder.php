@@ -24,6 +24,9 @@ class DatabaseSeeder extends Seeder
         Size::factory(3)->create();
         Product::factory(20)->hasSizes(3)->hasColors(3)->create();
 
+        $this->call(CategorySeeder::class);
+        $this->call(SizeSeeder::class);
+
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

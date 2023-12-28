@@ -24,18 +24,25 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $categoryIds = Category::take(20)->pluck('id')->all();
-        // $sizeIds = Size::take(20)->pluck('id')->all();
-        // $colorIds = Color::take(20)->pluck('id')->all();
-        return [
+        $title = [];
+        $description = [];
+        $product_image = [];
+        $price = range(1000, 100000, 1000);
+        $priceTake = fake()->randomElement($price);
+        $salesPriceTake = round(rand(1000, $priceTake) / 100) * 100;
+        $featured = fake()->boolean();
+        $category_id = Category::inRandomOrder()->first()->id;
+        $definition =  [
             'title' => fake()->words(3, true),
             'description' => fake()->sentence(8),
             'product_image' => 'https://api.lorem.space/image/album?w=300&h=400&random=' . Str::random(3),
-            'price' => fake()->randomNumber(5, true),
-            'sales_price' => fake()->optional()->randomNumber(5, true),
-            'featured' => fake()->boolean(),
-            'category_id' => Arr::random($categoryIds)
+            'price' => $priceTake,
+            'sales_price' => fake()->randomElement($price),
+            'featured' => $featured,
+            'category_id' => $category_id
 
         ];
+
+        return $definition;
     }
 }
