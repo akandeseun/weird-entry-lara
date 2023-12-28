@@ -57,22 +57,21 @@ class ProductFactory extends Factory
         ];
         $description = fake()->sentence(8);
         $product_image = [
-            'https://unsplash.com/photos/man-in-blue-and-white-crew-neck-t-shirt-and-blue-fitted-cap-standing-on-sidewalk-ebTNU_YTWgc',
-            'https://pixabay.com/photos/woman-beauty-fashion-streetwear-7508618/',
-            'https://pixabay.com/photos/girl-model-portrait-female-woman-5688122/',
-            'https://unsplash.com/photos/man-in-white-crew-neck-t-shirt-TysFvOl78u0',
-            'https://unsplash.com/photos/mens-white-crew-neck-t-shirt-2XcbGfYShfk',
-            'https://unsplash.com/photos/woman-in-white-crew-neck-t-shirt-FTrGeAy0RW4',
-            'https://unsplash.com/photos/woman-in-white-crew-neck-t-shirt-standing-beside-brown-concrete-wall-aP8KhiHbSvo',
-            'https://www.canva.com/photos/MAEQU2IZ5dU-a-man-in-brown-shirt-standing/',
-            'https://www.canva.com/photos/MAEuCjn6llE-a-man-wearing-a-kimono-jacket-and-a-bonnet-on-a-roof/',
-            'https://www.canva.com/photos/MAETIQRzMnQ-high-angle-shot-of-a-man-with-a-black-bucket-hat/',
-            'https://www.canva.com/photos/MADyR_pPu30-photo-of-two-standing-men-posing-beside-wooden-wall/',
-            'https://www.canva.com/photos/MAEPSFinXSs-sports-shoes-against-white-background/',
-            'https://www.canva.com/photos/MAEVlz2K3Qk-white-and-blue-rubber-shoes/',
-            'https://www.canva.com/photos/MAEPIscFDyg-black-and-purple-nike-athletic-shoe/',
-            'https://www.canva.com/photos/MAEPkgDkb4M/',
-            'https://www.canva.com/photos/MAETVFgGsww-woman-in-white-shirt-and-beige-cargo-pants/'
+            'https://i.pinimg.com/564x/99/b5/76/99b576c531fba6cd73145b2ff549b649.jpg',
+            'https://i.pinimg.com/474x/52/a1/78/52a17874b6bc2b6bd6c843867ae7780a.jpg',
+            'https://i.pinimg.com/474x/99/d2/e1/99d2e16034c2e30d5d2d51ae6f014201.jpg',
+            'https://i.pinimg.com/474x/d2/64/e8/d264e8f78ef4fdf150e536bf3c518dcb.jpg',
+            'https://i.pinimg.com/474x/86/49/10/864910b80879b333c0f9e53626b4e373.jpg',
+            'https://i.pinimg.com/474x/f1/54/bd/f154bd2a5ab84086e29ae1460eaa5a19.jpg',
+            'https://i.pinimg.com/474x/89/ed/f8/89edf882e43e515b50e88eff45c63837.jpg',
+            'https://i.pinimg.com/564x/bc/02/0a/bc020a155835e3a2efeb78aeac4c1f99.jpg',
+            'https://i.pinimg.com/474x/7a/4e/ae/7a4eaeff7d22f824f34fcce685cc287a.jpg',
+            'https://i.pinimg.com/474x/26/a1/a7/26a1a768da1a664427a16465ea742d8b.jpg',
+            'https://i.pinimg.com/474x/bd/d4/68/bdd468d9cc0991771e4f734294547273.jpg',
+            'https://i.pinimg.com/474x/ce/cb/28/cecb281a2a4128a446b7e29105b1d9a2.jpg',
+            'https://i.pinimg.com/474x/1d/35/57/1d35572ef26a34321398971318070c6d.jpg',
+            'https://i.pinimg.com/474x/66/f2/37/66f237683ba24dad6d41fd59f7ea51cd.jpg',
+            'https://i.pinimg.com/474x/6c/75/60/6c756015bb74a8940866916558d32344.jpg'
 
         ];
         $price = range(1000, 100000, 1000);
