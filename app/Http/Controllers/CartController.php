@@ -22,7 +22,6 @@ class CartController extends Controller
 
         $itemsAmount = collect(Arr::pluck($request->items, 'price'))->sum();
 
-
         $cart = Cart::updateOrCreate([
             'user_email' => $request->user_email,
             'purchased' => false

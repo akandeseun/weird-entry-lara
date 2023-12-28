@@ -19,10 +19,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        Category::factory(20)->create();
-        Color::factory(3)->create();
-        Size::factory(3)->create();
-        Product::factory(20)->hasSizes(3)->hasColors(3)->create();
+        $this->call(CategorySeeder::class);
+        $this->call(SizeSeeder::class);
+        $this->call(ColorSeeder::class);
+        $this->call(ProductSeeder::class);
 
 
         // \App\Models\User::factory()->create([
