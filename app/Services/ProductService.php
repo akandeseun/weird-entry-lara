@@ -75,7 +75,7 @@ class ProductService
 
   public function getProduct($id)
   {
-    $product = Product::with(['category', 'sizes'])->findOrFail($id);
+    $product = Product::with(['category', 'sizes', 'colors'])->findOrFail($id);
 
     return $product;
   }
