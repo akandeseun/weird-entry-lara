@@ -55,9 +55,9 @@ class ProductService
 
     // search filter 
     if ($search) {
-      $products = $products->where('title', 'LIKE', "%{$search}%")
+      $products = $products->where('title', 'ILIKE', "%{$search}%")
         ->orWhereHas('category', function (Builder $query) use ($search) {
-          $query->where('title', 'LIKE', "%{$search}%");
+          $query->where('title', 'ILIKE', "%{$search}%");
         })->get();
 
       if ($products->count() < 1) {
@@ -70,7 +70,7 @@ class ProductService
     }
 
     return $products
-      ->paginate(10);
+      ->paginate(12);
   }
 
   public function getProduct($id)
