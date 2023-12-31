@@ -35,7 +35,6 @@ class CartController extends Controller
 
     public function getUserCart(Request $request)
     {
-
         Validator::make($request->all(), [
             'user_email' => ['required', 'email']
         ])->validate();

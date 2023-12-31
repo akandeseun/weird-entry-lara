@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -84,3 +85,7 @@ Route::get('/order', [OrderController::class, 'getAllOrders']);
 
 // webhooks
 Route::post('/paystack-webhook', [OrderController::class, 'paystackWebhook']);
+
+// Transactions
+
+Route::get('/transactions', [TransactionController::class, 'getAllTransactions']);
