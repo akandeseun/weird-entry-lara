@@ -89,3 +89,4 @@ Route::post('/paystack-webhook', [OrderController::class, 'paystackWebhook']);
 // Transactions
 
 Route::get('/transactions', [TransactionController::class, 'getAllTransactions']);
+Route::get('/transactions/total', [TransactionController::class, 'getTotalTransactions']);

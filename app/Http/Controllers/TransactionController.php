@@ -13,4 +13,11 @@ class TransactionController extends Controller
 
         return response()->json(json_decode($response->body()));
     }
+
+    public function getTotalTransactions()
+    {
+        $response = Http::withToken(env('PAYSTACK_SECRET'))->get('https://api.paystack.co/transaction/totals');
+
+        return response()->json(json_decode($response->body()));
+    }
 }

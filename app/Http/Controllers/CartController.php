@@ -14,7 +14,7 @@ class CartController extends Controller
     {
         Validator::make($request->all(), [
             'items' => ['array'],
-            'user_email' => ['required', 'email']
+            'user_email' => ['required', 'email', 'exists:users,email']
         ])->validate();
 
         foreach ($request->items as $item) {
