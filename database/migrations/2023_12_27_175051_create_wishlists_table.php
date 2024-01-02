@@ -16,8 +16,6 @@ return new class extends Migration
             $table->ulid('user_id');
             $table->ulid('product_id');
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->timestamps();
         });
     }

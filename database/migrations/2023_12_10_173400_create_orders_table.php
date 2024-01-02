@@ -28,9 +28,6 @@ return new class extends Migration
             $table->string('payment_ref')->nullable();
             $table->string('order_status')->default('unconfirmed'); // 'processing', 'shipped', 'delivered', 'cancelled', 'unconfirmed'
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
-
             $table->timestamps();
         });
     }
