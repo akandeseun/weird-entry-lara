@@ -12,13 +12,11 @@ class ProductService
 {
   public function getAllProducts(Request $request)
   {
-
     // ToDo Refactor Filter logic
 
     $category = $request->category;
     $price = $request->price;
     $search = $request->s;
-
 
     $products = Product::with(['category'])->latest();
     // category and price filter
@@ -82,7 +80,6 @@ class ProductService
 
   public function createProduct(Request $request)
   {
-
     Validator::make($request->all(), [
       'title' => ['required', 'string'],
       'description' => ['required', 'string'],
@@ -94,7 +91,6 @@ class ProductService
       'featured' => ['sometimes', 'boolean'],
       'category_id' => ['required', 'integer', 'exists:categories,id']
     ])->validate();
-
 
     $product = Product::create($request->all());
 
@@ -133,7 +129,6 @@ class ProductService
 
   public function deleteProduct($id)
   {
-
     $product = $this->getProduct($id);
 
     $product->delete();

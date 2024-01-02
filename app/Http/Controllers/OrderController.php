@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Order;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -13,19 +14,40 @@ class OrderController extends Controller
 
     public function create(Request $request)
     {
+        // ToDO: Comeback to the error message validation
+        $errorMessage = ['payment_ref.unique' => 'payment reference already exists'];
+
         Validator::make($request->all(), [
             'user_id' => ['required', 'integer', 'exists:users,id'],
             'cart_id' => ['required', 'integer', 'exists:carts,id'],
             'subtotal' => ['required'],
             'delivery_fee' => ['required'],
             'total' => ['required'],
-            'shipping_address' => ['required'],
+            'shipping_address' => ['required', 'string'],
             'payment_ref' => ['required'],
             'payment_status' => ['sometimes', 'string'],
             'order_status' => ['sometimes', 'string']
-        ])->validate();
+        ], $errorMessage)->validate();
+
+        $cartTotal = Cart::where('id', $request->cart_id)->value('items_amount');
+        $orderItemsTotal = $cartTotal + $request->delivery_fee;
+
+        // ToDo: Remove cause in response after frontend has tested/implemented
+        if ($orderItemsTotal !== $request->total) {
+            return response()->json([
+                "message" => "Order not created",
+                "cause" => "Discrepancies in Order Details"
+            ]);
+        }
 
         $order = Order::create($request->all());
+
+        return response()->json([$order]);
+    }
+
+    public function getOrder($idOrRef)
+    {
+        $order = Order::where('id', $idOrRef)->orWhere('order_reference', str($idOrRef))->get();
 
         return response()->json($order);
     }

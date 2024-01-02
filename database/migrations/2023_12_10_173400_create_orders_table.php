@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary();
             $table->string('order_reference');
-            $table->unsignedBigInteger('user_id')->unsigned();
-            $table->unsignedBigInteger('cart_id')->unsigned();
+            $table->ulid('user_id');
+            $table->ulid('cart_id');
 
             $table->float('subtotal', 10);
             $table->float('delivery_fee', 10);

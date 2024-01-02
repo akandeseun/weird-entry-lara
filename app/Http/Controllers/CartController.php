@@ -14,11 +14,8 @@ class CartController extends Controller
     {
         Validator::make($request->all(), [
             'items' => ['array'],
-            'user_email' => ['required', 'email']
+            'user_email' => ['required', 'email', 'exists:users,email']
         ])->validate();
-
-        foreach ($request->items as $item) {
-        }
 
         $itemsAmount = collect(Arr::pluck($request->items, 'price'))->sum();
 
@@ -35,7 +32,6 @@ class CartController extends Controller
 
     public function getUserCart(Request $request)
     {
-
         Validator::make($request->all(), [
             'user_email' => ['required', 'email']
         ])->validate();
