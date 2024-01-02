@@ -18,8 +18,8 @@ class OrderController extends Controller
         $errorMessage = ['payment_ref.unique' => 'payment reference already exists'];
 
         Validator::make($request->all(), [
-            'user_id' => ['required', 'integer', 'exists:users,id'],
-            'cart_id' => ['required', 'integer', 'exists:carts,id'],
+            'user_id' => ['required', 'string', 'exists:users,id'],
+            'cart_id' => ['required', 'string', 'exists:carts,id'],
             'subtotal' => ['required'],
             'delivery_fee' => ['required'],
             'total' => ['required'],
@@ -45,9 +45,9 @@ class OrderController extends Controller
         return response()->json([$order]);
     }
 
-    public function getOrder($idOrRef)
+    public function getOrder(string $idOrRef)
     {
-        $order = Order::where('id', $idOrRef)->orWhere('order_reference', str($idOrRef))->get();
+        $order = Order::where('id', $idOrRef)->orWhere('order_reference', $idOrRef)->get();
 
         return response()->json($order);
     }
