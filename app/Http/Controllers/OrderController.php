@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Order;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -13,6 +14,7 @@ class OrderController extends Controller
 
     public function create(Request $request)
     {
+        // ToDO: Comeback to the error message validation
         $errorMessage = ['payment_ref.unique' => 'payment reference already exists'];
 
         Validator::make($request->all(), [
@@ -41,6 +43,13 @@ class OrderController extends Controller
         $order = Order::create($request->all());
 
         return response()->json([$order]);
+    }
+
+    public function getOrder($idOrRef)
+    {
+        $order = Order::where('id', $idOrRef)->orWhere('order_reference', str($idOrRef))->get();
+
+        return response()->json($order);
     }
 
     public function getUserOrders($userId)
