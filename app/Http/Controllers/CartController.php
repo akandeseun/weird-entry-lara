@@ -17,9 +17,6 @@ class CartController extends Controller
             'user_email' => ['required', 'email', 'exists:users,email']
         ])->validate();
 
-        foreach ($request->items as $item) {
-        }
-
         $itemsAmount = collect(Arr::pluck($request->items, 'price'))->sum();
 
         $cart = Cart::updateOrCreate([
