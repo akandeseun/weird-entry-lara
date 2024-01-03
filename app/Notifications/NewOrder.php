@@ -43,7 +43,7 @@ class NewOrder extends Notification
             ->subject('New Order Notification.')
             ->line('A new order has been placed!')
             ->line('Order Ref: ' . $this->order->order_reference)
-            ->line('Total Amount: $' . $this->order->total)
+            ->line('Total Amount: ₦' . $this->order->total)
             // ToDo: add action to view order
             // ->action('View Order', $this->url)
             ->line('Thank you for using our application!');

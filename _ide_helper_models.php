@@ -27,8 +27,8 @@ namespace App\Models{
  * @property string $order_status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Cart $cart
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\Cart|null $cart
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Order query()
@@ -60,7 +60,7 @@ namespace App\Models{
  * @property int $price
  * @property int|null $sales_price
  * @property bool $featured
- * @property int $category_id
+ * @property string $category_id
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
