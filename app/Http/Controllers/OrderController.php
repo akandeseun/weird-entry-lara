@@ -111,7 +111,7 @@ class OrderController extends Controller
         $cart = Cart::where('id', $order->cart_id)->update(['purchased' => true]);
 
         // ToDo: send mail to admins upon successful payment/order
-        $admins = User::where('is_admin', true);
+        $admins = User::where('is_admin', true)->get();
         Notification::send($admins, new NewOrder($order));
 
         // ToDo: include column for tracking the number of orders a certain product has recieved
@@ -119,7 +119,6 @@ class OrderController extends Controller
     }
 
     // Handle Payments
-
     public function paystackWebhook(Request $request)
     {
         $requestBody = @file_get_contents("php://input");
