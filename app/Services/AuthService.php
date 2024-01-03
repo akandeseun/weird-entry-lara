@@ -110,6 +110,8 @@ class AuthService
 
     $user->email_verified_at = now();
     $user->save();
+    // invalidate token upon verification
+    Auth::invalidate();
 
     return (object)[
       "message" => "Email verified successfully"

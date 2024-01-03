@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\User;
+use App\Notifications\NewOrder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Notification;
 use Validator;
 
 class OrderController extends Controller
@@ -107,7 +110,10 @@ class OrderController extends Controller
         // mark cart as purchased
         $cart = Cart::where('id', $order->cart_id)->update(['purchased' => true]);
 
-        // ToDo: send mail to admin upon successful payment/order
+        // ToDo: send mail to admins upon successful payment/order
+        $admins = User::where('is_admin', true);
+        Notification::send($admins, new NewOrder($order));
+
         // ToDo: include column for tracking the number of orders a certain product has recieved
 
     }

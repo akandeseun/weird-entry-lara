@@ -13,13 +13,15 @@ class NewOrder extends Notification
     use Queueable;
 
     protected Order $order;
+    protected $url;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($order)
+    public function __construct($order, $url = null)
     {
         $this->order = $order;
+        $this->url = $url;
     }
 
     /**
@@ -42,7 +44,8 @@ class NewOrder extends Notification
             ->line('A new order has been placed!')
             ->line('Order Ref: ' . $this->order->order_reference)
             ->line('Total Amount: $' . $this->order->total)
-            // ->action('View Order', )
+            // ToDo: add action to view order
+            // ->action('View Order', $this->url)
             ->line('Thank you for using our application!');
     }
 
