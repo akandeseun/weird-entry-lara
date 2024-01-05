@@ -6,7 +6,6 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
 use App\Notifications\NewOrder;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Notification;
 use Validator;
@@ -92,6 +91,7 @@ class OrderController extends Controller
         ]);
 
         // Todo: add features for when order is cancelled/ confirmed or shipped
+
         return response()->json([
             "message" => "Order status updated",
             $order
