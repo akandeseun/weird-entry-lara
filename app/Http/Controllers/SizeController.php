@@ -13,7 +13,7 @@ class SizeController extends Controller
     public function __construct(private SizeService $sizeService)
     {
     }
-    //
+
     public function getAllSizes()
     {
         $sizes = $this->sizeService->getAllSizes();
