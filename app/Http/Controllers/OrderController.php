@@ -16,7 +16,7 @@ class OrderController extends Controller
 
     public function create(Request $request)
     {
-        // ToDO: Comeback to the error message validation
+        // ToDo: Comeback to the error message validation
         $errorMessage = ['payment_ref.unique' => 'payment reference already exists'];
 
         Validator::make($request->all(), [
