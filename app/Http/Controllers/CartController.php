@@ -17,7 +17,13 @@ class CartController extends Controller
             'user_email' => ['required', 'email', 'exists:users,email']
         ])->validate();
 
-        $itemsAmount = collect(Arr::pluck($request->items, 'price'))->sum();
+        $newItems = [];
+
+        foreach ($request->items as $cartItem) {
+            $cartItemPrice = $cartItem['price'] * $cartItem['quantity'];
+            array_push($newItems, $cartItemPrice);
+        }
+        $itemsAmount = collect($newItems)->sum();
 
         $cart = Cart::updateOrCreate([
             'user_email' => $request->user_email,
