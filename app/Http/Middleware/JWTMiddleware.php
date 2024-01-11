@@ -20,14 +20,13 @@ class JWTMiddleware
         try {
             $user = JWTAuth::parseToken()->authenticate();
             if (!$user) {
-                return response([
+                return response()->json([
                     "message" => "Unauthorized"
-
                 ], 500);
             }
         } catch (JWTException $e) {
-            return response([
-                "error" => "omo jwt error oo",
+            return response()->json([
+                "error" => "Token Error",
                 "message" => $e->getMessage()
             ], 500);
         }

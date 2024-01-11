@@ -7,12 +7,15 @@ use App\Models\Order;
 use App\Models\User;
 use App\Notifications\NewOrder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Notification;
 use Validator;
 
 class OrderController extends Controller
 {
     //Todo: Paginate endpoints responses
+    //Todo: Feature: Admin cancel order, give reasons to customer
+
 
     public function create(Request $request)
     {
@@ -54,10 +57,30 @@ class OrderController extends Controller
         return response()->json($order);
     }
 
+    public function getCurrentUserOrders(Request $request)
+    {
+        $userId = Auth::id();
+
+        $validStatuses = 'processing,shipped,delivered,cancelled,unconfirmed,confirmed';
+        $errorMessage = ['order_status.in' => "Valid statuses: ($validStatuses)"];
+
+        Validator::make($request->all(), [
+            'order_status' => ['sometimes', "in:$validStatuses"]
+        ], $errorMessage)->validate();
+
+        $orders = Order::latest()->with(['user', 'cart'])->where('user_id', $userId);
+
+        // sort orders based on status
+        if ($request->order_status) {
+            return $orders->where('order_status', $request->order_status)->get();
+        }
+        $orders->get();
+
+        return response()->json($orders);
+    }
+
     public function getUserOrders($userId)
     {
-        // Todo: sort orders based on statuses
-
         $orders = Order::latest()->with(['user', 'cart'])->where('user_id', $userId)->get();
 
         return response()->json($orders);
