@@ -29,7 +29,7 @@ class OrderController extends Controller
             'delivery_fee' => ['required'],
             'total' => ['required'],
             'shipping_address' => ['required', 'string'],
-            'payment_ref' => ['required'],
+            'payment_ref' => ['required', 'unique:orders,payment_ref'],
             'payment_status' => ['sometimes', 'string'],
             'order_status' => ['sometimes', 'string']
         ], $errorMessage)->validate();
@@ -52,7 +52,7 @@ class OrderController extends Controller
 
     public function getOrder(string $idOrRef)
     {
-        $order = Order::where('id', $idOrRef)->orWhere('order_reference', $idOrRef)->get();
+        $order = Order::with(['cart'])->where('id', $idOrRef)->orWhere('order_reference', $idOrRef)->firstOrFail();
 
         return response()->json($order);
     }
@@ -89,7 +89,7 @@ class OrderController extends Controller
     // Todo: sort based on query parameters
     public function getAllOrders()
     {
-        $orders = Order::latest()->with(['cart'])->get();
+        $orders = Order::with(['cart'])->latest()->paginate(15);
 
         return response()->json($orders);
     }
@@ -123,7 +123,7 @@ class OrderController extends Controller
 
     public function markAsSuccessful($paymentReference)
     {
-        $order = Order::where('payment_ref', $paymentReference)->firstOrFail();
+        $order = Order::with(['cart'])->where('payment_ref', $paymentReference)->firstOrFail();
 
         $order->update([
             'payment_status' => 'success',
