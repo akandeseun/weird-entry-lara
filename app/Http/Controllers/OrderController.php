@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
+use App\Notifications\CustomerOrderNotification;
 use App\Notifications\NewOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -131,9 +132,13 @@ class OrderController extends Controller
         ]);
 
         // mark cart as purchased
-        $cart = Cart::where('id', $order->cart_id)->update(['purchased' => true]);
+        $cart = Cart::where('id', $order->cart_id);
+        $cart->update(['purchased' => true]);
 
-        // ToDo: send mail to admins upon successful payment/order
+        // send conformation mail to customer
+        Notification::send(Auth::user(), new CustomerOrderNotification($order, $cart));
+
+        // send email to admins about new order
         $admins = User::where('is_admin', true)->get();
         Notification::send($admins, new NewOrder($order));
 
