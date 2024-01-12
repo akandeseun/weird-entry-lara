@@ -124,7 +124,7 @@ class OrderController extends Controller
 
     public function markAsSuccessful($paymentReference)
     {
-        $order = Order::with(['cart'])->where('payment_ref', $paymentReference)->firstOrFail();
+        $order = Order::where('payment_ref', $paymentReference)->firstOrFail();
 
         $order->update([
             'payment_status' => 'success',
@@ -136,7 +136,8 @@ class OrderController extends Controller
         $cart->update(['purchased' => true]);
 
         // send conformation mail to customer
-        Notification::send(Auth::user(), new CustomerOrderNotification($order, $cart));
+        $customer = User::where('email', $cart->user_email);
+        Notification::send($customer, new CustomerOrderNotification($order, $cart));
 
         // send email to admins about new order
         $admins = User::where('is_admin', true)->get();
