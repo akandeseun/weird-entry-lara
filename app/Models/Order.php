@@ -18,7 +18,7 @@ class Order extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->order_reference = 'WRD' . Str::random(7);
+            $model->order_reference = 'WRD-' . strtoupper(Str::random(6));
         });
     }
 

@@ -30,7 +30,7 @@ class Handler extends ExceptionHandler
     {
         $this->renderable(function (\Exception $e, $request) {
             if ($e instanceof NotFoundHttpException) {
-                return response()->json(['message' => 'Not found'], 404);
+                return response()->json(['message' => 'Resource Not found'], 404);
             }
             if ($e instanceof HttpException) {
                 return response()->json(['message' => $e->getMessage()], $e->getStatusCode());

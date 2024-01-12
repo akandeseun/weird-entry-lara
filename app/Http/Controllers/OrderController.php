@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
+use App\Notifications\CustomerOrderNotification;
 use App\Notifications\NewOrder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Notification;
 use Validator;
 
 class OrderController extends Controller
 {
     //Todo: Paginate endpoints responses
+    //Todo: Feature: Admin cancel order, give reasons to customer
+
 
     public function create(Request $request)
     {
@@ -26,7 +30,7 @@ class OrderController extends Controller
             'delivery_fee' => ['required'],
             'total' => ['required'],
             'shipping_address' => ['required', 'string'],
-            'payment_ref' => ['required'],
+            'payment_ref' => ['required', 'unique:orders,payment_ref'],
             'payment_status' => ['sometimes', 'string'],
             'order_status' => ['sometimes', 'string']
         ], $errorMessage)->validate();
@@ -49,15 +53,35 @@ class OrderController extends Controller
 
     public function getOrder(string $idOrRef)
     {
-        $order = Order::where('id', $idOrRef)->orWhere('order_reference', $idOrRef)->get();
+        $order = Order::with(['cart'])->where('id', $idOrRef)->orWhere('order_reference', $idOrRef)->firstOrFail();
 
         return response()->json($order);
     }
 
+    public function getCurrentUserOrders(Request $request)
+    {
+        $userId = Auth::id();
+
+        $validStatuses = 'processing,shipped,delivered,cancelled,unconfirmed,confirmed';
+        $errorMessage = ['order_status.in' => "Valid statuses: ($validStatuses)"];
+
+        Validator::make($request->all(), [
+            'order_status' => ['sometimes', "in:$validStatuses"]
+        ], $errorMessage)->validate();
+
+        $orders = Order::latest()->with(['user', 'cart'])->where('user_id', $userId);
+
+        // sort orders based on status
+        if ($request->order_status) {
+            return $orders->where('order_status', $request->order_status)->get();
+        }
+        $orders->get();
+
+        return response()->json($orders);
+    }
+
     public function getUserOrders($userId)
     {
-        // Todo: sort orders based on statuses
-
         $orders = Order::latest()->with(['user', 'cart'])->where('user_id', $userId)->get();
 
         return response()->json($orders);
@@ -66,7 +90,7 @@ class OrderController extends Controller
     // Todo: sort based on query parameters
     public function getAllOrders()
     {
-        $orders = Order::latest()->with(['cart'])->get();
+        $orders = Order::with(['cart'])->latest()->paginate(15);
 
         return response()->json($orders);
     }
@@ -108,9 +132,14 @@ class OrderController extends Controller
         ]);
 
         // mark cart as purchased
-        $cart = Cart::where('id', $order->cart_id)->update(['purchased' => true]);
+        $cart = Cart::where('id', $order->cart_id);
+        $cart->update(['purchased' => true]);
 
-        // ToDo: send mail to admins upon successful payment/order
+        // send conformation mail to customer
+        $customer = User::where('email', $cart->user_email);
+        Notification::send($customer, new CustomerOrderNotification($order, $cart));
+
+        // send email to admins about new order
         $admins = User::where('is_admin', true)->get();
         Notification::send($admins, new NewOrder($order));
 
