@@ -141,7 +141,7 @@ class OrderController extends Controller
         Notification::send($admins, new NewOrder($order));
 
         // send conformation mail to customer
-        $customer = User::where('email', $cart->user_email)->first();
+        $customer = User::where('id', $order->user_id)->get();
         Notification::send($customer, new CustomerOrderNotification($order, $cart));
 
 
