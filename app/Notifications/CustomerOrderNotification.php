@@ -40,8 +40,8 @@ class CustomerOrderNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $message = new MailMessage;
-        $message->subject('Order Confirmation.')
+        return (new MailMessage)
+            ->subject('Order Confirmation.')
             ->greeting("Hello, {$notifiable->first_name}")
             ->line('Thank you for your order! Here are the details:')
             ->line('Order Reference: ' . $this->order->order_reference)
@@ -49,10 +49,10 @@ class CustomerOrderNotification extends Notification
             ->line('Delivery Fee: ₦' . $this->order->delivery_fee)
             ->line('Items:');
 
-        foreach ($this->cart->items as $item) {
-            $message->line('- ' . $item['title'] . ' x ' . $item['quantity']);
-        }
-        return $message;
+        // foreach ($this->cart->items as $item) {
+        //     $message->line('- ' . $item['title'] . ' x ' . $item['quantity']);
+        // }
+
     }
 
     /**
