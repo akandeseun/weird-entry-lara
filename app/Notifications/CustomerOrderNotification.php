@@ -45,7 +45,8 @@ class CustomerOrderNotification extends Notification
             ->greeting("Hello, {$notifiable->first_name}")
             ->line('Thank you for your order! Here are the details:')
             ->line('Order Reference: ' . $this->order->order_reference)
-            ->line('Total Amount: ₦' . $this->order->total)
+            ->line('Total Amount: ₦' . $this->order->subtotal)
+            ->line('Delivery Fee: ₦' . $this->order->delivery_fee)
             ->line('Items:');
 
         foreach ($this->cart->items as $item) {
