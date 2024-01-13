@@ -98,10 +98,11 @@ return [
     | used globally for all e-mails that are sent by your application.
     |
     */
+    // TODO: remove my mail and chhange it to weird entry's mail after going live
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'akandeseun44@gmail.com'),
+        'name' => env('MAIL_FROM_NAME', 'Weird Entry'),
     ],
 
     /*

@@ -9,8 +9,9 @@ use App\Notifications\CustomerOrderNotification;
 use App\Notifications\NewOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Notification;
+use Illuminate\Support\Facades\Notification;
 use Validator;
+
 
 class OrderController extends Controller
 {
@@ -124,7 +125,7 @@ class OrderController extends Controller
 
     public function markAsSuccessful($paymentReference)
     {
-        $order = Order::where('payment_ref', $paymentReference)->firstOrFail();
+        $order = Order::where('payment_ref', $paymentReference)->first();
 
         $order->update([
             'payment_status' => 'success',
@@ -135,13 +136,14 @@ class OrderController extends Controller
         $cart = Cart::where('id', $order->cart_id);
         $cart->update(['purchased' => true]);
 
-        // send conformation mail to customer
-        // $customer = User::where('email', $cart->user_email)->firstOrFail();
-        // Notification::send($customer, new CustomerOrderNotification($order, $cart));
-
         // send email to admins about new order
         $admins = User::where('is_admin', true)->get();
         Notification::send($admins, new NewOrder($order));
+
+        // send conformation mail to customer
+        $customer = User::where('email', $cart->user_email)->first();
+        Notification::send($customer, new CustomerOrderNotification($order, $cart));
+
 
         // ToDo: include column for tracking the number of orders a certain product has recieved
 
