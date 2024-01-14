@@ -109,6 +109,17 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Coupon
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon query()
+ */
+	class Coupon extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Order
  *
  * @property string $id
