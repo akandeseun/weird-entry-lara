@@ -137,7 +137,7 @@ class OrderController extends Controller
         $cart->update(['purchased' => true]);
 
         // send email to admins about new order
-        $admins = User::where('is_admin', true);
+        $admins = User::where('is_admin', true)->get();
         Notification::send($admins, new NewOrder($order));
 
         Notification::send($order->user, new CustomerOrderNotification($order, $cart));
