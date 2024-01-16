@@ -140,7 +140,8 @@ class OrderController extends Controller
         $admins = User::where('is_admin', true)->get();
         Notification::send($admins, new NewOrder($order));
 
-        Notification::send($order->user, new CustomerOrderNotification($order, $cart));
+        // $order->user->notify();
+        Notification::sendNow($order->user, new CustomerOrderNotification($order, $cart));
 
 
         // ToDo: include column for tracking the number of orders a certain product has recieved
