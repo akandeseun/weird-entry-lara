@@ -54,7 +54,7 @@ class OrderController extends Controller
 
     public function getOrder(string $idOrRef)
     {
-        $order = Order::with(['cart'])->where('id', $idOrRef)->orWhere('order_reference', $idOrRef)->firstOrFail();
+        $order = Order::with(['cart', 'user'])->where('id', $idOrRef)->orWhere('order_reference', $idOrRef)->firstOrFail();
 
         return response()->json($order);
     }
@@ -125,7 +125,7 @@ class OrderController extends Controller
 
     public function markAsSuccessful($paymentReference)
     {
-        $order = Order::where('payment_ref', $paymentReference)->first();
+        $order = Order::with(['user'])->where('payment_ref', $paymentReference)->first();
 
         $order->update([
             'payment_status' => 'success',
@@ -137,12 +137,10 @@ class OrderController extends Controller
         $cart->update(['purchased' => true]);
 
         // send email to admins about new order
-        $admins = User::where('is_admin', true);
+        $admins = User::where('is_admin', true)->get();
         Notification::send($admins, new NewOrder($order));
 
-        // send conformation mail to customer
-        $customer = User::where('id', $order->user_id);
-        Notification::send($customer, new CustomerOrderNotification($order, $cart));
+        Notification::send($order->user, new CustomerOrderNotification($order, $cart));
 
 
         // ToDo: include column for tracking the number of orders a certain product has recieved
