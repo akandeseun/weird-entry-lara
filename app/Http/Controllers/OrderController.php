@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewOrder;
 use App\Mail\OrderConfirmation;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
 use App\Notifications\CustomerOrderNotification;
-use App\Notifications\NewOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -127,7 +127,9 @@ class OrderController extends Controller
 
     public function markAsSuccessful($paymentReference)
     {
-        $order = Order::with(['user'])->where('payment_ref', $paymentReference)->first();
+        $order = Order::with(['user', 'cart'])->where('payment_ref', $paymentReference)->first();
+
+        $admins = User::where('is_admin', true)->get();
 
         $order->update([
             'payment_status' => 'success',
@@ -139,10 +141,11 @@ class OrderController extends Controller
         $cart->update(['purchased' => true]);
 
         // check if it works
-        Mail::to($order->user)->send(new OrderConfirmation());
+        Mail::to($order->user)->send(new OrderConfirmation($order));
+        Mail::to($admins)->send(new NewOrder($order));
 
         // // send email to admins about new order
-        // $admins = User::where('is_admin', true)->get();
+
         // Notification::send($admins, new NewOrder($order));
 
         // // $order->user->notify();
