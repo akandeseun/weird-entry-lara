@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderConfirmation;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
@@ -9,6 +10,7 @@ use App\Notifications\CustomerOrderNotification;
 use App\Notifications\NewOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Validator;
 
@@ -136,12 +138,15 @@ class OrderController extends Controller
         $cart = Cart::where('id', $order->cart_id);
         $cart->update(['purchased' => true]);
 
-        // send email to admins about new order
-        $admins = User::where('is_admin', true)->get();
-        Notification::send($admins, new NewOrder($order));
+        // check if it works
+        Mail::to($order->user)->send(new OrderConfirmation());
 
-        // $order->user->notify();
-        Notification::sendNow($order->user, new CustomerOrderNotification($order, $cart));
+        // // send email to admins about new order
+        // $admins = User::where('is_admin', true)->get();
+        // Notification::send($admins, new NewOrder($order));
+
+        // // $order->user->notify();
+        // Notification::sendNow($order->user, new CustomerOrderNotification($order, $cart));
 
 
         // ToDo: include column for tracking the number of orders a certain product has recieved
