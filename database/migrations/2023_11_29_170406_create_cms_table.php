@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('cms', function (Blueprint $table) {
             $table->ulid('id')->primary();
+
+
             $table->timestamps();
         });
     }
