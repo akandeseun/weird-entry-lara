@@ -37,7 +37,7 @@
       </div>
 
       <div class="mt-6">
-        <a href="{{ route('admin.orders.show', $order->id) }}" class="bg-blue-500 text-white px-4 py-2 rounded-md inline-block">View Order</a>
+        <a href="#" class="bg-blue-500 text-white px-4 py-2 rounded-md inline-block">View Order</a>
       </div>
 
     </div>
