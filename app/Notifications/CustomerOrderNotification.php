@@ -14,8 +14,8 @@ class CustomerOrderNotification extends Notification implements ShouldQueue
     use Queueable;
 
 
-    protected Cart $cart;
-    protected Order $order;
+    public Cart $cart;
+    public Order $order;
     /**
      * Create a new notification instance.
      */
