@@ -142,7 +142,8 @@ class OrderController extends Controller
         $cart->update(['purchased' => true]);
 
         // Dispatch Event
-        OrderPlaced::dispatch($order, $cart);
+        // OrderPlaced::dispatch($order, $cart);
+        event(new OrderPlaced($order, $cart));
 
         // check if it works
         // Mail::to($order->user)->send(new OrderConfirmation($order));
