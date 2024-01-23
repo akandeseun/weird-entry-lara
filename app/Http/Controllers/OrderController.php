@@ -126,11 +126,16 @@ class OrderController extends Controller
         ]);
     }
 
+    public function notifyAdmins(Order $order)
+    {
+        $admins = User::where('is_admin', true);
+    }
+
     public function markAsSuccessful($paymentReference)
     {
         $order = Order::with(['user', 'cart'])->where('payment_ref', $paymentReference)->first();
 
-        $admins = User::where('is_admin', true)->get();
+        $admins = collect(User::where('is_admin', true)->get());
 
         $order->update([
             'payment_status' => 'success',
