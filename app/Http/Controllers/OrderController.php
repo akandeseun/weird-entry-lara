@@ -143,11 +143,11 @@ class OrderController extends Controller
 
         // Dispatch Event
         // OrderPlaced::dispatch($order, $cart);
-        event(new OrderPlaced($order, $cart));
+        // event(new OrderPlaced($order, $cart));
 
         // check if it works
-        // Mail::to($order->user)->send(new OrderConfirmation($order));
-        // Mail::to($admins)->send(new NewOrder($order));
+        Mail::to($order->user)->queue(new OrderConfirmation($order));
+        Mail::to($admins)->queue(new NewOrder($order));
 
         // // send email to admins about new order
 
