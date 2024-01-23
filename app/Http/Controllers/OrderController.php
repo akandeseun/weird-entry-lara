@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Events\OrderPlaced;
 use App\Mail\NewOrder;
 use App\Mail\OrderConfirmation;
+use App\Mail\OrderStatus;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
-use App\Notifications\CustomerOrderNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -99,7 +99,7 @@ class OrderController extends Controller
         return response()->json($orders);
     }
 
-    public function updateOrderStatus(Request $request)
+    public function updateOrderStatus(Request $request, string $idOrRef)
     {
         $validStatuses = ['processing', 'shipped', 'delivered', 'cancelled', 'unconfirmed', 'confirmed'];
 
@@ -108,15 +108,18 @@ class OrderController extends Controller
         $errorMessage = ['order_status.in' => "Valid statuses:{$status}"];
 
         Validator::make($request->all(), [
-            'order_id' => ['required', 'integer', 'exists:orders,id'],
             'order_status' => ['required', "in:{$status}"]
         ], $errorMessage)->validate();
 
-        $order = Order::where('id', $request->order_id);
+        $order = Order::where('id', $idOrRef)
+            ->orWhere('order_reference', $idOrRef);
 
         $order->update([
             'order_status' => $request->order_status
         ]);
+
+        // send mail to user of change in order status
+        Mail::to($order->user)->queue(new OrderStatus($order));
 
         // Todo: add features for when order is cancelled/ confirmed or shipped
 
@@ -126,6 +129,7 @@ class OrderController extends Controller
         ]);
     }
 
+    // TODO: come back to it
     public function notifyAdmins(Order $order)
     {
         $admins = User::where('is_admin', true);
@@ -146,20 +150,10 @@ class OrderController extends Controller
         $cart = Cart::where('id', $order->cart_id);
         $cart->update(['purchased' => true]);
 
-        // Dispatch Event
-        // OrderPlaced::dispatch($order, $cart);
-        // event(new OrderPlaced($order, $cart));
-
         // check if it works
         Mail::to($order->user)->queue(new OrderConfirmation($order));
+        // change mail to be more dynamic
         Mail::to(env("ADMIN_MAIL"))->queue(new NewOrder($order));
-
-        // // send email to admins about new order
-
-        // Notification::send($admins, new NewOrder($order));
-
-        // // $order->user->notify();
-        // Notification::sendNow($order->user, new CustomerOrderNotification($order, $cart));
 
 
         // ToDo: include column for tracking the number of orders a certain product has recieved

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  @vite('resources/css/app.css')
   <!-- <title>New Order Alert</title> -->
 </head>
 
@@ -23,8 +23,7 @@
       <p><strong>Order Total:</strong> ${{ $order->total }}</p>
 
       <div class="mt-4">
-        <p><strong>Shipping Address:</strong></p>
-        <p>{{ $order->shipping_address }}</p>
+        <p><strong>Shipping Address:</strong>{{ $order->shipping_address }}</p>
       </div>
 
       <div class="mt-4">
