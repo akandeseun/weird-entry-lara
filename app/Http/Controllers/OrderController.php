@@ -152,7 +152,7 @@ class OrderController extends Controller
 
         // check if it works
         Mail::to($order->user)->queue(new OrderConfirmation($order));
-        Mail::to($admins)->queue(new NewOrder($order));
+        Mail::to(env("ADMIN_MAIL"))->queue(new NewOrder($order));
 
         // // send email to admins about new order
 
