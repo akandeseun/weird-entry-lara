@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OrderPlaced;
 use App\Mail\NewOrder;
 use App\Mail\OrderConfirmation;
 use App\Models\Cart;
@@ -140,9 +141,12 @@ class OrderController extends Controller
         $cart = Cart::where('id', $order->cart_id);
         $cart->update(['purchased' => true]);
 
+        // Dispatch Event
+        OrderPlaced::dispatch($order, $cart);
+
         // check if it works
-        Mail::to($order->user)->send(new OrderConfirmation($order));
-        Mail::to($admins)->send(new NewOrder($order));
+        // Mail::to($order->user)->send(new OrderConfirmation($order));
+        // Mail::to($admins)->send(new NewOrder($order));
 
         // // send email to admins about new order
 
