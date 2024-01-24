@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
+use Spatie\LaravelPdf\Facades\Pdf;
 use Validator;
 
 
@@ -146,9 +148,13 @@ class OrderController extends Controller
             'order_status' => 'confirmed'
         ]);
 
+
         // mark cart as purchased
         $cart = Cart::where('id', $order->cart_id);
         $cart->update(['purchased' => true]);
+
+        // generate user receipt
+        Pdf::view('pdf.receipt', ['order' => $order])->save("/t_invoices/" . Str::take($order->user->first_name, 5) . date("Y-m-d") . ".pdf");
 
         // check if it works
         Mail::to($order->user)->queue(new OrderConfirmation($order));
