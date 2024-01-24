@@ -154,7 +154,7 @@ class OrderController extends Controller
         $cart->update(['purchased' => true]);
 
         // generate user receipt
-        Pdf::view('pdf.receipt', ['order' => $order])->save("/t_invoices/" . Str::take($order->user->first_name, 5) . date("Y-m-d") . ".pdf");
+        // Pdf::view('pdf.receipt', ['order' => $order])->save("/t_invoices/" . Str::take($order->user->first_name, 5) . date("Y-m-d") . ".pdf");
 
         // check if it works
         Mail::to($order->user)->queue(new OrderConfirmation($order));

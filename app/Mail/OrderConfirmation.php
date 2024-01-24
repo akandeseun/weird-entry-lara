@@ -54,9 +54,9 @@ class OrderConfirmation extends Mailable
     public function attachments(): array
     {
         return [
-            Attachment::fromPath("/t_invoices/" . Str::take($this->order->user->first_name, 5) . date("Y-m-d") . ".pdf")
-                ->as(Str::take($this->order->user->first_name, 5) . date("Y-m-d") . ".pdf")
-                ->withMime('application/pdf'),
+            // Attachment::fromPath("/t_invoices/" . Str::take($this->order->user->first_name, 5) . date("Y-m-d") . ".pdf")
+            //     ->as(Str::take($this->order->user->first_name, 5) . date("Y-m-d") . ".pdf")
+            //     ->withMime('application/pdf'),
         ];
     }
 }
