@@ -6,9 +6,11 @@ use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Str;
 
 class OrderConfirmation extends Mailable
 {
@@ -51,6 +53,10 @@ class OrderConfirmation extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        return [
+            Attachment::fromPath("/t_invoices/" . Str::take($this->order->user->first_name, 5) . date("Y-m-d") . ".pdf")
+                ->as(Str::take($this->order->user->first_name, 5) . date("Y-m-d") . ".pdf")
+                ->withMime('application/pdf'),
+        ];
     }
 }
