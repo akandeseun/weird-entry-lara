@@ -151,10 +151,10 @@ class OrderController extends Controller
         $cart->update(['purchased' => true]);
 
         // generate user receipt
-        $pdf = Pdf::loadView('pdf.receipt', ['order' => $order]);
+        $pdf = Pdf::loadView('pdf.receipt', ['order' => $order])->output();
 
         // check if it works
-        Mail::to($order->user)->queue(new OrderConfirmation($order));
+        Mail::to($order->user)->queue(new OrderConfirmation($order, $pdf));
         // change mail to be more dynamic
         Mail::to(env("ADMIN_MAIL"))->queue(new NewOrder($order));
 
