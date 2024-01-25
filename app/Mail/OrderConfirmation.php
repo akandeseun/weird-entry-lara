@@ -10,20 +10,21 @@ use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Str;
 
 class OrderConfirmation extends Mailable
 {
     use Queueable, SerializesModels;
 
     public Order $order;
+    public $pdf;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(Order $order)
+    public function __construct(Order $order, $pdf)
     {
         $this->order = $order;
+        $this->pdf = $pdf;
     }
 
     /**
@@ -54,9 +55,7 @@ class OrderConfirmation extends Mailable
     public function attachments(): array
     {
         return [
-            // Attachment::fromPath("/t_invoices/" . Str::take($this->order->user->first_name, 5) . date("Y-m-d") . ".pdf")
-            //     ->as(Str::take($this->order->user->first_name, 5) . date("Y-m-d") . ".pdf")
-            //     ->withMime('application/pdf'),
+            Attachment::fromData(fn () => $this->pdf, $this->order->order_reference . ".pdf"),
         ];
     }
 }
