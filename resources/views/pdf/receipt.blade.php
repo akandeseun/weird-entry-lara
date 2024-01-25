@@ -49,8 +49,8 @@
         <th>Description</th>
         <th>Price</th>
       </tr>
+      @foreach($order->cart->items as $item)
       <tr class="items">
-        @foreach($order->cart->items as $item)
         <td>
           {{ $item['quantity'] }}
         </td>
@@ -60,20 +60,20 @@
         <td>
           {{ $item['price'] }}
         </td>
-        @endforeach
       </tr>
+      @endforeach
     </table>
   </div>
 
   <div class="total">
-    Subtotal: <span>&#8358;</span>{{$order->subtotal}}
+    Subtotal: ₦{{$order->subtotal}}
   </div>
   <div class="total">
-    Delivery Fee: <span>&#8358;</span>{{$order->delivery_fee}}
+    Delivery Fee: ₦{{$order->delivery_fee}}
   </div>
   <strong>
     <div class="total">
-      Total: <span>&#8358;</span>{{$order->total}}
+      Total: ₦{{$order->total}}
     </div>
   </strong>
 
