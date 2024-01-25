@@ -16,15 +16,15 @@ class OrderConfirmation extends Mailable
     use Queueable, SerializesModels;
 
     public Order $order;
-    public $pdf;
+    // public $pdf;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(Order $order, $pdf)
+    public function __construct(Order $order)
     {
         $this->order = $order;
-        $this->pdf = $pdf;
+        // $this->pdf = $pdf;
     }
 
     /**
@@ -55,7 +55,7 @@ class OrderConfirmation extends Mailable
     public function attachments(): array
     {
         return [
-            Attachment::fromData(fn () => $this->pdf, $this->order->order_reference . ".pdf"),
+            // Attachment::fromData(fn () => $this->pdf, $this->order->order_reference . ".pdf"),
         ];
     }
 }
