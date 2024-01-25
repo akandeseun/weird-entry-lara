@@ -9,12 +9,12 @@ use App\Mail\OrderStatus;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
-use Spatie\LaravelPdf\Facades\Pdf;
 use Validator;
 
 
@@ -141,23 +141,20 @@ class OrderController extends Controller
     {
         $order = Order::with(['user', 'cart'])->where('payment_ref', $paymentReference)->first();
 
-        $admins = collect(User::where('is_admin', true)->get());
-
         $order->update([
             'payment_status' => 'success',
             'order_status' => 'confirmed'
         ]);
-
 
         // mark cart as purchased
         $cart = Cart::where('id', $order->cart_id);
         $cart->update(['purchased' => true]);
 
         // generate user receipt
-        // Pdf::view('pdf.receipt', ['order' => $order])->save("/t_invoices/" . Str::take($order->user->first_name, 5) . date("Y-m-d") . ".pdf");
+        $pdf = Pdf::loadView('pdf.receipt', ['order' => $order]);
 
         // check if it works
-        Mail::to($order->user)->queue(new OrderConfirmation($order));
+        Mail::to($order->user)->queue(new OrderConfirmation($order, $pdf));
         // change mail to be more dynamic
         Mail::to(env("ADMIN_MAIL"))->queue(new NewOrder($order));
 

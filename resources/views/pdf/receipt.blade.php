@@ -1,70 +1,85 @@
+<!doctype html>
 <html lang="en">
 
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Receipt</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="{{ resource_path('css/receipt.css') }}" type="text/css">
 </head>
 
 <body>
-  <div class="px-2 py-8 max-w-xl mx-auto">
-    <div class="flex items-center justify-between mb-8">
-      <div class="flex items-center">
-        <div class="text-gray-700 font-semibold text-lg">Weird Entry</div>
-      </div>
-      <div class="text-gray-700">
-        <div class="font-bold text-xl mb-2 uppercase">Receipt</div>
-        <div class="text-sm">
-          Date:
-          <?= date('Y-m-d') ?>
-        </div>
-        <div class="text-sm">
-          Order Reference : {{ $order->order_reference }}
-        </div>
-      </div>
-    </div>
-    <div class="border-b-2 border-gray-300 pb-8 mb-8">
-      <h2 class="text-xl font-bold mb-4">For:</h2>
-      <div class="text-gray-700 mb-2">{{ $order->user->first_name }}</div>
-      <div class="text-gray-700 mb-2">{{$order->shipping_address}}</div>
-      <div class="text-gray-700">{{$order->cart->user_email}}</div>
-    </div>
-    <table class="w-full text-left mb-8">
-      <thead>
-        <tr>
-          <th class="text-gray-700 font-bold uppercase py-2">Description</th>
-          <th class="text-gray-700 font-bold uppercase py-2">Quantity</th>
-          <th class="text-gray-700 font-bold uppercase py-2">Price</th>
-          <th class="text-gray-700 font-bold uppercase py-2">Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach ($order->cart->items as $item)
-        <tr>
-          <td class="py-4 text-gray-700">$item['title']</td>
-          <td class="py-4 text-gray-700">$item['quantity']</td>
-          <td class="py-4 text-gray-700"><span>&#8358;</span>$item['price']</td>
-          <td class="py-4 text-gray-700"><span>&#8358;</span><?= $item['quantity'] * $item['price'] ?></td>
-        </tr>
-        @endforeach
+  <table class="w-full">
+    <tr>
+      <td class="w-half">
+        <img src="{{ resource_path('images/wentry.png') }}" alt="weird entry" width="200" />
+      </td>
+      <td class="w-half">
+        <h2>Order Reference: {{$order->order_reference}}</h2>
+      </td>
+    </tr>
+  </table>
 
-      </tbody>
+  <div class="margin-top">
+    <table class="w-full">
+      <tr>
+        <td class="w-half">
+          <div>
+            <h4>To:</h4>
+          </div>
+          <div>{{$order->user->first_name}}</div>
+          <div>{{$order->shipping_address}}</div>
+        </td>
+        <td class="w-half">
+          <div>
+            <h4>From:</h4>
+          </div>
+          <div>Weird Entry</div>
+        </td>
+      </tr>
     </table>
-    <div class="flex justify-end mb-8">
-      <div class="text-gray-700 mr-2">Subtotal:</div>
-      <div class="text-gray-700"><span>&#8358;</span>{{$order->subtotal}}</div>
+  </div>
+
+  <div class="margin-top">
+    <table class="products">
+      <tr>
+        <th>Qty</th>
+        <th>Description</th>
+        <th>Price</th>
+      </tr>
+      <tr class="items">
+        @foreach($order->cart->items as $item)
+        <td>
+          {{ $item['quantity'] }}
+        </td>
+        <td>
+          {{ $item['title'] }}
+        </td>
+        <td>
+          {{ $item['price'] }}
+        </td>
+        @endforeach
+      </tr>
+    </table>
+  </div>
+
+  <div class="total">
+    Subtotal: <span>&#8358;</span>{{$order->subtotal}}
+  </div>
+  <div class="total">
+    Delivery Fee: <span>&#8358;</span>{{$order->delivery_fee}}
+  </div>
+  <strong>
+    <div class="total">
+      Total: <span>&#8358;</span>{{$order->total}}
     </div>
-    <div class="text-right mb-8">
-      <div class="text-gray-700 mr-2">Delivery Fee:</div>
-      <div class="text-gray-700"><span>&#8358;</span>{{$order->delivery_fee}}</div>
-    </div>
-    <div class="flex justify-end mb-8">
-      <div class="text-gray-700 mr-2">Total:</div>
-      <div class="text-gray-700 font-bold text-xl"> <span>&#8358;</span>{{$order->total}}</div>
-    </div>
-    <div class="border-t-2 border-gray-300 pt-8 mb-8">
-      <div class="text-gray-700 mb-2">Thank you for your patronage</div>
-      <div class="text-gray-700"> Weird Entry <?= date("Y"); ?> </div>
-    </div>
+  </strong>
+
+  <div class="footer margin-top">
+    <div>Thank you</div>
+    <div>&copy; Weird Entry</div>
   </div>
 </body>
 
