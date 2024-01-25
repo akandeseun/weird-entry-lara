@@ -4,7 +4,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  @vite('resources/css/app.css')
+
+  <style>
+    .font-sans {
+      font-family: sans-serif;
+    }
+
+    .max-w-screen-md {
+      max-width: 768px;
+      /* Adjust the value based on your design */
+    }
+
+    .mx-auto {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .p-4 {
+      padding: 1rem;
+    }
+
+    .bg-white {
+      background-color: #fff;
+    }
+
+    .p-14 {
+      padding: 3.5rem;
+      /* Adjust the value based on your design */
+    }
+
+    .rounded-lg {
+      border-radius: 0.5rem;
+      /* Adjust the value based on your design */
+    }
+
+    .shadow-md {
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      /* Adjust the values based on your design */
+    }
+
+    .text-xl {
+      font-size: 1.25rem;
+      /* Adjust the value based on your design */
+    }
+
+    .font-bold {
+      font-weight: 700;
+    }
+
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+
+    .mt-4 {
+      margin-top: 1rem;
+    }
+
+    .mt-6 {
+      margin-top: 1.5rem;
+      /* Adjust the value based on your design */
+    }
+
+    /* Additional styles for the second HTML code */
+
+    .bg-blue-500 {
+      background-color: #1E40AF;
+      /* Adjust the color based on your design */
+    }
+
+    .text-white {
+      color: #fff;
+      /* Adjust the color based on your design */
+    }
+
+    .px-4 {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .py-2 {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .rounded-md {
+      border-radius: 0.375rem;
+      /* Adjust the value based on your design */
+    }
+
+    .inline-block {
+      display: inline-block;
+    }
+  </style>
   <!-- <title>New Order Alert</title> -->
 </head>
 
