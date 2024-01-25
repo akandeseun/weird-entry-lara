@@ -154,9 +154,9 @@ class OrderController extends Controller
         $pdf = Pdf::loadView('pdf.receipt', ['order' => $order])->output();
 
         // check if it works
-        Mail::to($order->user)->queue(new OrderConfirmation($order, $pdf));
+        Mail::to($order->user)->send(new OrderConfirmation($order, $pdf));
         // change mail to be more dynamic
-        Mail::to(env("ADMIN_MAIL"))->queue(new NewOrder($order));
+        Mail::to(env("ADMIN_MAIL"))->send(new NewOrder($order));
 
 
         // ToDo: include column for tracking the number of orders a certain product has recieved
