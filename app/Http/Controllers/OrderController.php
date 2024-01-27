@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\OrderPlaced;
+use App\Jobs\NotifyAdminAndCustomer;
 use App\Mail\NewOrder;
 use App\Mail\OrderConfirmation;
 use App\Mail\OrderStatus;
@@ -150,13 +151,14 @@ class OrderController extends Controller
         $cart = Cart::where('id', $order->cart_id);
         $cart->update(['purchased' => true]);
 
+        NotifyAdminAndCustomer::dispatch($order);
         // generate user receipt
-        $pdf = Pdf::loadView('pdf.receipt', ['order' => $order])->output();
+        // $pdf = Pdf::loadView('pdf.receipt', ['order' => $order])->output();
 
-        // check if it works
-        Mail::to($order->user)->send(new OrderConfirmation($order, $pdf));
-        // change mail to be more dynamic
-        Mail::to(env("ADMIN_MAIL"))->send(new NewOrder($order));
+        // // check if it works
+        // Mail::to($order->user)->send(new OrderConfirmation($order, $pdf));
+        // // change mail to be more dynamic
+        // Mail::to(env("ADMIN_MAIL"))->send(new NewOrder($order));
 
 
         // ToDo: include column for tracking the number of orders a certain product has recieved
