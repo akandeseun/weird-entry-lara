@@ -66,14 +66,14 @@
   </div>
 
   <div class="total">
-    Subtotal: <span>&#x20A6</span>{{$order->subtotal}}
+    Subtotal: <span>&#x20A6;</span>{{$order->subtotal}}
   </div>
   <div class="total">
-    Delivery Fee: <span>&#x20A6</span>{{$order->delivery_fee}}
+    Delivery Fee: <span>&#x20A6;</span>{{$order->delivery_fee}}
   </div>
   <strong>
     <div class="total">
-      Total: <span>&#x20A6</span>{{$order->total}}
+      Total: <span>&#x20A6;</span>{{$order->total}}
     </div>
   </strong>
 
