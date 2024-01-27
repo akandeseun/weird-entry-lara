@@ -76,7 +76,8 @@ Route::get('/cart', [CartController::class, 'currentUserCart'])->middleware(['jw
 
 // Wishlists
 Route::post('/wishlist/create', [WishlistController::class, 'addToWishlist'])->middleware(['jwt-auth']);
-Route::post('/wishlist/create', [WishlistController::class, 'removeFromWishlist'])->middleware(['jwt-auth']);
+Route::post('/wishlist/remove', [WishlistController::class, 'removeFromWishlist'])->middleware(['jwt-auth']);
+Route::get('/wishlist', [WishlistController::class, 'getCurrentUserWishlist'])->middleware(['jwt-auth']);
 
 // Orders
 Route::post('/order/create', [OrderController::class, 'create']);

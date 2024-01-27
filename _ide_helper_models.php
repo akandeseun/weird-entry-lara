@@ -111,9 +111,21 @@ namespace App\Models{
 /**
  * App\Models\Coupon
  *
+ * @property string $id
+ * @property string $code
+ * @property string $discount_percentage
+ * @property string $expiration_date
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Coupon newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Coupon newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Coupon query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereDiscountPercentage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereExpirationDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereUpdatedAt($value)
  */
 	class Coupon extends \Eloquent {}
 }

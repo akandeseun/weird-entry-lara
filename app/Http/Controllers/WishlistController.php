@@ -12,7 +12,7 @@ class WishlistController extends Controller
     public function addToWishlist(Request $request)
     {
         Validator::make($request->all(), [
-            'product_id' => ['required', 'integer', 'exists:products,id'],
+            'product_id' => ['required', 'exists:products,id'],
         ])->validate();
 
         $wishlist = Wishlist::create([
@@ -23,17 +23,17 @@ class WishlistController extends Controller
         return response()->json([
             "message" => "Product added to wishlist",
             $wishlist
-        ]);
+        ], 201);
     }
 
     public function removeFromWishlist(Request $request)
     {
         $user = Auth::id();
         Validator::make($request->all(), [
-            'product_id' => ['required', 'integer', 'exists:products,id'],
+            'product_id' => ['required', 'exists:products,id'],
         ])->validate();
 
-        $wishlists = Wishlist::where('user_id', $user)
+        Wishlist::where('user_id', $user)
             ->where('product_id', $request->product_id)->delete();
 
         return response()->json([
@@ -45,7 +45,7 @@ class WishlistController extends Controller
     {
         $user = Auth::id();
 
-        $wishlists = Wishlist::where('user_id', $user)->get();
+        $wishlists = Wishlist::with(['products', 'users'])->where('user_id', $user)->get();
 
         if ($wishlists->isEmpty()) {
             return response()->json(["message" => "Empty Wishlist"]);

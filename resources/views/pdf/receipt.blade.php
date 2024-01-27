@@ -66,14 +66,14 @@
   </div>
 
   <div class="total">
-    Subtotal: ₦{{$order->subtotal}}
+    Subtotal: <span>&#x20A6</span>{{$order->subtotal}}
   </div>
   <div class="total">
-    Delivery Fee: ₦{{$order->delivery_fee}}
+    Delivery Fee: <span>&#x20A6</span>{{$order->delivery_fee}}
   </div>
   <strong>
     <div class="total">
-      Total: ₦{{$order->total}}
+      Total: <span>&#x20A6</span>{{$order->total}}
     </div>
   </strong>
 
