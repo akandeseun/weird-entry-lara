@@ -7,14 +7,14 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Receipt</title>
 
-  <link rel="stylesheet" href="{{ resource_path('css/receipt.css') }}" type="text/css">
+  <link rel="stylesheet" href="{{ secure_asset('css/receipt.css') }}" type="text/css">
 </head>
 
 <body>
   <table class="w-full">
     <tr>
       <td class="w-half">
-        <img src="{{ resource_path('images/wentry.png') }}" alt="weird entry" width="200" />
+        <img src="{{ secure_asset('images/wentry.png') }}" alt="weird entry" width="200" />
       </td>
       <td class="w-half">
         <h2>Order Reference: {{$order->order_reference}}</h2>
