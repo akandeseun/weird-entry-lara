@@ -44,7 +44,9 @@ class AuthService
 
     $token = Auth::login($user);
 
-    $url = config('app.url') . "/confirm-email?token={$token}";
+    // Todo: change url to live url when live 
+    // $url = config('app.url') . "/confirm-email?token={$token}";
+    $url = "https://weird-entry.vercel.app/verified-email?token={$token}";
 
     // $user->notify(new EmailVerification($url));
     Notification::send($user, new EmailVerification($url));
@@ -70,13 +72,18 @@ class AuthService
     }
 
     if (Auth::user()->email_verified_at === null) {
-      $url = config('app.url') . "/confirm-email?token={$token}";
 
-      // $user->notify(new EmailVerification($url));
-      Notification::send(Auth::user(), new EmailVerification($url));
+      $this->resendVerificationMail($request->user(), $token);
+
       return response()->json([
         'message' => 'Please verify your email, a new one has been sent to your email'
       ], 400);
+
+
+      // $url = config('app.url') . "/confirm-email?token={$token}";
+
+      // // $user->notify(new EmailVerification($url));
+      // Notification::send(Auth::user(), new EmailVerification($url));
     }
 
     if ($is_admin && !Auth::user()->is_admin) {
@@ -122,7 +129,9 @@ class AuthService
 
   public function resendVerificationMail(User $user, $token)
   {
-    $url = config('app.url') . "/confirm-email?token={$token}";
+    // $url = config('app.url') . "/confirm-email?token={$token}";
+
+    $url = "https://weird-entry.vercel.app/verified-email?token={$token}";
 
     Notification::send($user, new EmailVerification($url));
   }
