@@ -45,7 +45,7 @@ class WishlistController extends Controller
     {
         $user = Auth::id();
 
-        $wishlists = Wishlist::with(['products', 'users'])->where('user_id', $user)->get();
+        $wishlists = Wishlist::with(['products', 'user'])->where('user_id', $user)->get();
 
         if ($wishlists->isEmpty()) {
             return response()->json(["message" => "Empty Wishlist"]);
