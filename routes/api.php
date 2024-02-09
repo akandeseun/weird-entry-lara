@@ -84,6 +84,7 @@ Route::post('/order/create', [OrderController::class, 'create']);
 Route::get('/order', [OrderController::class, 'getAllOrders']);
 Route::get('/order/{idOrRef}', [OrderController::class, 'getOrder']);
 Route::post('/order/{idOrRef}/status', [OrderController::class, 'updateOrderStatus']);
+Route::get('/order/pending', [OrderController::class, 'getPendingOrders']);
 
 
 // webhooks

@@ -45,13 +45,13 @@ class Product extends Model
         return $this->belongsToMany(Color::class, 'products_colors');
     }
 
-    public function carts(): HasMany
-    {
-        return $this->hasMany(Cart::class);
-    }
+    // public function carts(): HasMany
+    // {
+    //     return $this->hasMany(Cart::class);
+    // }
 
     public function wishlists(): HasMany
     {
-        return $this->hasMany(Wishlist::class);
+        return $this->hasMany(Wishlist::class, 'product_id', 'id');
     }
 }

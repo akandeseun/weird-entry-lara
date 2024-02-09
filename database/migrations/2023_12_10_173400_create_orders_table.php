@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('payment_status')->default('unpaid');
             // pending, refund, cancelled, completed
             $table->string('payment_ref')->nullable();
-            $table->string('order_status')->default('unconfirmed'); // 'processing', 'shipped', 'delivered', 'cancelled', 'unconfirmed'
+            $table->string('order_status')->default('unconfirmed'); // 'pending', 'shipped', 'delivered', 'cancelled', 'unconfirmed'
 
             $table->timestamps();
         });

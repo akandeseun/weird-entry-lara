@@ -186,8 +186,6 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cart> $carts
- * @property-read int|null $carts_count
  * @property-read \App\Models\Category|null $category
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Color> $colors
  * @property-read int|null $colors_count
@@ -298,7 +296,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Product|null $products
- * @property-read \App\Models\User|null $users
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|Wishlist newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Wishlist newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Wishlist query()

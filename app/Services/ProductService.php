@@ -34,7 +34,12 @@ class ProductService
     // category filter
     if ($category) {
 
-      $categories = Str::of($category)->explode('+');
+      // $categories = Str::of($category)->explode('+')->toArray();
+      $categories = explode(' ', $category);
+
+      // return response()->json([
+      //   "data" => $categories
+      // ]);
 
       return $products
         ->where('category_id', '=', $category)

@@ -104,7 +104,7 @@ class OrderController extends Controller
 
     public function updateOrderStatus(Request $request, string $idOrRef)
     {
-        $validStatuses = ['processing', 'shipped', 'delivered', 'cancelled', 'unconfirmed', 'confirmed'];
+        $validStatuses = ['pending', 'shipped', 'delivered', 'cancelled', 'unconfirmed', 'confirmed'];
 
         $status = implode(',', $validStatuses,);
 
@@ -144,7 +144,7 @@ class OrderController extends Controller
 
         $order->update([
             'payment_status' => 'success',
-            'order_status' => 'confirmed'
+            'order_status' => 'pending'
         ]);
 
         // mark cart as purchased
@@ -152,17 +152,19 @@ class OrderController extends Controller
         $cart->update(['purchased' => true]);
 
         NotifyAdminAndCustomer::dispatch($order);
-        // generate user receipt
-        // $pdf = Pdf::loadView('pdf.receipt', ['order' => $order])->output();
-
-        // // check if it works
-        // Mail::to($order->user)->send(new OrderConfirmation($order, $pdf));
-        // // change mail to be more dynamic
-        // Mail::to(env("ADMIN_MAIL"))->send(new NewOrder($order));
-
 
         // ToDo: include column for tracking the number of orders a certain product has recieved
 
+    }
+
+    public function getPendingOrders()
+    {
+        $orders = Order::where('order_status', 'pending')->get();
+
+        return response()->json([
+            "data" => $orders,
+            "count" => $orders->count()
+        ]);
     }
 
     // Handle Payments
