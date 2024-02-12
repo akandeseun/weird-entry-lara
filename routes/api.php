@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
@@ -94,3 +95,7 @@ Route::post('/paystack-webhook', [OrderController::class, 'paystackWebhook']);
 
 Route::get('/transactions', [TransactionController::class, 'getAllTransactions']);
 Route::get('/transactions/total', [TransactionController::class, 'getTotalTransactions']);
+
+// Admin
+// Todo: add admin middleware
+Route::get('/overview', [AdminController::class, 'overviewStats']);
