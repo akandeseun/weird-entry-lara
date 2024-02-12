@@ -16,7 +16,7 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->string('title');
             $table->text('description');
-            $table->string('product_image')->nullable();
+            $table->json('product_image')->nullable();
             $table->integer('price');
             $table->integer('sales_price')->nullable();
             $table->boolean('featured')->default(false);

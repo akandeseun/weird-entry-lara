@@ -81,7 +81,7 @@ class ProductFactory extends Factory
         $definition =  [
             'title' => "WEIRD ENTRY " . fake()->randomElement($titles),
             'description' => $description,
-            'product_image' => fake()->randomElement($product_image),
+            'product_image' => fake()->randomElements($product_image, 4),
             'price' => $priceTake,
             'sales_price' => fake()->randomElement([null, $salesPriceTake]),
             'featured' => $featured,

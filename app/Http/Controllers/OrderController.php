@@ -167,6 +167,16 @@ class OrderController extends Controller
         ]);
     }
 
+    public function getCompletedOrders()
+    {
+        $orders = Order::where('order_status', 'completed')->get();
+
+        return response()->json([
+            "data" => $orders,
+            "count" => $orders->count()
+        ]);
+    }
+
     // Handle Payments
     public function paystackWebhook(Request $request)
     {

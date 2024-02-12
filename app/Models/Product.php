@@ -18,6 +18,8 @@ class Product extends Model
 
     protected $hidden = ['pivot', 'category_id'];
 
+    protected $casts = ['product_image' => 'array'];
+
     /**
      * The relationships that should always be loaded.
      *
