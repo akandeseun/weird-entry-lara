@@ -20,8 +20,8 @@ class AuthService
       'last_name' => ['required', 'string', 'max:255'],
       'address' => ['required', 'string'],
       'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-      'state' => ['required'],
-      'city' => ['required'],
+      'state' => ['sometimes', 'string'],
+      'city' => ['sometimes', 'string'],
       'password' => ['required', 'string', 'min:8', 'confirmed'],
       'password_confirmation' => ['required']
     ])->validate();
