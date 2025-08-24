@@ -1,10 +1,10 @@
-# Weird Entry - Laravel E-commerce API
+# LaraCommerce - A Laravel E-commerce API
 
-This is the backend API for the Weird Entry e-commerce application, built with the Laravel framework. It provides a comprehensive set of endpoints to manage products, categories, users, orders, and more. It includes features like user authentication with JWT, cart management, order processing with payment gateway integration, and image handling via Cloudinary.
+This is the backend API for the LaraCommerce e-commerce application, built with the Laravel framework. It provides a comprehensive set of endpoints to manage products, categories, users, orders, and more. It includes features like user authentication with JWT, cart management, order processing with payment gateway integration, and image handling via Cloudinary.
 
 ## About The Application
 
-Weird Entry is a robust e-commerce platform that allows administrators to manage inventory and users to browse products and make purchases. The application is designed to be scalable and easy to maintain, following Laravel's best practices.
+LaraCommerce is a robust e-commerce platform that allows administrators to manage inventory and users to browse products and make purchases. The application is designed to be scalable and easy to maintain, following Laravel's best practices.
 
 ### Key Features
 
@@ -35,8 +35,8 @@ Follow these instructions to get a copy of the project up and running on your lo
 1.  **Clone the repository**
 
     ```bash
-    git clone https://github.com/akandeseun/weird-entry-lara.git
-    cd weird-entry-lara
+    git clone https://github.com/akandeseun/laracommerce.git
+    cd laracommerce
     ```
 
 2.  **Install PHP dependencies**
@@ -150,7 +150,7 @@ Here is a list of the available API routes for the application.
 
 ## Contributing
 
-Thank you for considering contributing to the Weird Entry project! Please feel free to create a pull request.
+Thank you for considering contributing to the LaraCommerce project! Please feel free to create a pull request.
 
 ## License
 
