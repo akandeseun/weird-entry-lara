@@ -155,3 +155,7 @@ Thank you for considering contributing to the LaraCommerce project! Please feel 
 ## License
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+E-Commerce API developed with Laravel
+
+Documentation: https://documenter.getpostman.com/view/20514882/2s9YeK2p2v
