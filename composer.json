@@ -1,8 +1,11 @@
 {
-    "name": "laravel/laravel",
+    "name": "akandeseun/laracommerce",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "A comprehensive e-commerce API built with Laravel.",
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.1",
